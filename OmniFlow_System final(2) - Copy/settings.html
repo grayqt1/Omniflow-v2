@@ -1,0 +1,874 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>OmniFlow — Settings</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    .settings-layout {
+      display: grid;
+      grid-template-columns: 200px 1fr;
+      gap: 24px;
+    }
+
+    .settings-nav {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .settings-nav-item {
+      padding: 9px 12px;
+      border-radius: 8px;
+      font-size: 13.5px;
+      font-weight: 500;
+      color: var(--ink-2);
+      cursor: pointer;
+      transition: background 0.15s;
+    }
+
+    .settings-nav-item:hover {
+      background: var(--border);
+    }
+
+    .settings-nav-item.active {
+      background: var(--blue-soft);
+      color: var(--blue);
+      font-weight: 600;
+    }
+
+    .settings-panel {
+      display: none;
+    }
+
+    .settings-panel.active {
+      display: block;
+    }
+
+    .settings-section {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px;
+      margin-bottom: 16px;
+    }
+
+    .settings-section-title {
+      font-size: 14px;
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+
+    .settings-section-sub {
+      font-size: 12.5px;
+      color: var(--ink-3);
+      margin-bottom: 20px;
+    }
+
+    .form-group {
+      margin-bottom: 16px;
+    }
+
+    label {
+      display: block;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--ink-2);
+      margin-bottom: 5px;
+    }
+
+    input[type=text],
+    input[type=email],
+    input[type=password],
+    select.full {
+      width: 100%;
+      max-width: 400px;
+      padding: 8px 12px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      font-size: 13px;
+      font-family: inherit;
+      outline: none;
+      background: var(--bg);
+      color: var(--ink);
+    }
+
+    input:focus,
+    select.full:focus {
+      border-color: var(--blue);
+      background: var(--surface);
+    }
+
+    .form-row {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .form-row .form-group {
+      flex: 1;
+      min-width: 160px;
+    }
+
+    .btn {
+      height: 36px;
+      padding: 0 16px;
+      border-radius: 8px;
+      border: none;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      font-family: inherit;
+    }
+
+    .btn-primary {
+      background: var(--blue);
+      color: white;
+    }
+
+    .btn-primary:hover {
+      background: #265fd4;
+    }
+
+    .btn-danger {
+      background: #FEE2E2;
+      color: #DC2626;
+    }
+
+    .toggle-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 0;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .toggle-row:last-child {
+      border-bottom: none;
+    }
+
+    .toggle-label {
+      font-size: 13px;
+      font-weight: 500;
+    }
+
+    .toggle-sub {
+      font-size: 12px;
+      color: var(--ink-3);
+    }
+
+    .toggle {
+      position: relative;
+      width: 38px;
+      height: 22px;
+      flex-shrink: 0;
+    }
+
+    .toggle input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+
+    .toggle-slider {
+      position: absolute;
+      inset: 0;
+      background: var(--border);
+      border-radius: 22px;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .toggle-slider::before {
+      content: '';
+      position: absolute;
+      width: 16px;
+      height: 16px;
+      left: 3px;
+      top: 3px;
+      background: white;
+      border-radius: 50%;
+      transition: transform 0.2s;
+    }
+
+    .toggle input:checked+.toggle-slider {
+      background: var(--blue);
+    }
+
+    .toggle input:checked+.toggle-slider::before {
+      transform: translateX(16px);
+    }
+
+    .user-table-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 0;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .user-table-row:last-child {
+      border-bottom: none;
+    }
+
+    .user-avatar-sm {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: var(--blue-soft);
+      color: var(--blue);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+
+    .user-info {
+      flex: 1;
+    }
+
+    .user-info-name {
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    .user-info-email {
+      font-size: 12px;
+      color: var(--ink-3);
+    }
+
+    .role-badge {
+      font-size: 11px;
+      font-weight: 600;
+      padding: 2px 8px;
+      border-radius: 20px;
+      background: var(--blue-soft);
+      color: var(--blue);
+    }
+
+    .permissions-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 12px;
+    }
+
+    .permissions-table th,
+    .permissions-table td {
+      border: 1px solid var(--border);
+      padding: 12px;
+      vertical-align: top;
+    }
+
+    .permissions-table th {
+      background: var(--surface);
+      font-size: 12px;
+      color: var(--ink-3);
+      text-align: left;
+    }
+
+    .permissions-table td {
+      background: var(--bg);
+    }
+
+    .permission-checkbox {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 6px;
+      font-size: 12px;
+      color: var(--ink);
+    }
+
+    .permission-checkbox input {
+      width: 14px;
+      height: 14px;
+      accent-color: var(--blue);
+    }
+
+    .settings-section-actions {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      align-items: center;
+      margin-top: 16px;
+    }
+
+    .settings-section-actions .btn {
+      min-width: 140px;
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="sidebar-logo">
+      <div class="logo-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.2" stroke-linecap="round"
+          stroke-linejoin="round">
+          <polygon
+            points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+        </svg>
+      </div>
+      <span class="logo-text">Omni<span>Flow</span></span>
+    </div>
+    <nav>
+      <div class="nav-label">Main</div>
+      <a class="nav-item" href="home.html">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+          stroke-linejoin="round">
+          <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
+          <polyline points="9 22 9 12 15 12 15 22" />
+        </svg>Home</a>
+      <a class="nav-item" href="dashboard.html">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+          stroke-linejoin="round">
+          <rect x="3" y="3" width="7" height="7" />
+          <rect x="14" y="3" width="7" height="7" />
+          <rect x="14" y="14" width="7" height="7" />
+          <rect x="3" y="14" width="7" height="7" />
+        </svg>Dashboard</a>
+      <div class="nav-divider"></div>
+      <div class="nav-label">Operations</div>
+      <a class="nav-item" href="orders.html">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+          stroke-linejoin="round">
+          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+          <polyline points="14 2 14 8 20 8" />
+        </svg>Order Management</a>
+      <a class="nav-item" href="clients.html">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+          stroke-linejoin="round">
+          <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+          <circle cx="9" cy="7" r="4" />
+        </svg>Client List</a>
+      <a class="nav-item" href="production.html">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+          stroke-linejoin="round">
+          <rect x="3" y="4" width="18" height="18" rx="2" />
+          <line x1="16" y1="2" x2="16" y2="6" />
+          <line x1="8" y1="2" x2="8" y2="6" />
+          <line x1="3" y1="10" x2="21" y2="10" />
+        </svg>Production</a>
+      <a class="nav-item" href="inventory.html">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+          stroke-linejoin="round">
+          <path
+            d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z" />
+        </svg>Inventory</a>
+      <div class="nav-divider"></div>
+      <div class="nav-label">Insights</div>
+      <a class="nav-item" href="reports.html">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+          stroke-linejoin="round">
+          <line x1="18" y1="20" x2="18" y2="10" />
+          <line x1="12" y1="20" x2="12" y2="4" />
+          <line x1="6" y1="20" x2="6" y2="14" />
+        </svg>Reports</a>
+      <a class="nav-item" href="activity.html">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+          stroke-linejoin="round">
+          <path d="M22 12h-4l-3 9L9 3l-3 9H2" />
+        </svg>Activity</a>
+      <div class="nav-divider"></div>
+      <a class="nav-item active" href="settings.html">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+          stroke-linejoin="round">
+          <circle cx="12" cy="12" r="3" />
+          <path d="M19.07 4.93a10 10 0 0 1 0 14.14M4.93 4.93a10 10 0 0 0 0 14.14" />
+        </svg>Settings</a>
+    </nav>
+    <div class="sidebar-footer">
+      <div class="avatar" id="user-avatar"></div>
+      <div>
+        <div class="user-name" id="user-name">—</div>
+        <div class="user-role" id="user-role">—</div>
+      </div>
+      <button class="logout-btn" onclick="logout()">Logout</button>
+    </div>
+  </aside>
+
+  <!-- MAIN -->
+  <div class="main">
+    <header class="topbar">
+      <span class="topbar-title">Settings</span>
+    </header>
+
+    <main class="content">
+      <div class="page-header">
+        <div class="page-title">Settings</div>
+        <div class="page-sub">Manage your shop, account, and preferences</div>
+      </div>
+
+      <div class="settings-layout">
+
+        <!-- Settings Nav -->
+        <div class="settings-nav">
+          <div class="settings-nav-item active" onclick="showPanel('account')">My Account</div>
+          <div class="settings-nav-item" id="nav-users" onclick="showPanel('users')">Users & Roles</div>
+          <div class="settings-nav-item" onclick="showPanel('notifications')">Notifications</div>
+          <div class="settings-nav-item" id="nav-permissions" onclick="showPanel('permissions')">Permissions</div>
+          <div class="settings-nav-item" id="nav-audit" onclick="showPanel('audit')" style="display:none;">Audit Log</div>
+        </div>
+
+        <!-- My Account Panel -->
+        <div class="settings-panel active" id="panel-account">
+          <div class="settings-section">
+            <div class="settings-section-title">My Account</div>
+            <div class="settings-section-sub">Update your personal info</div>
+            <div class="form-row">
+              <div class="form-group">
+                <label>Full Name</label>
+                <input type="text" id="acc-name" placeholder="Your name" />
+              </div>
+              <div class="form-group">
+                <label>Email</label>
+                <input type="email" id="acc-email" placeholder="name@email.com" />
+              </div>
+            </div>
+            <button class="btn btn-primary" onclick="saveAccount()">Save Changes</button>
+          </div>
+          <div class="settings-section">
+            <div class="settings-section-title">Change Password</div>
+            <div class="settings-section-sub">Enter your current password, then choose a new one.</div>
+            <div class="form-row">
+              <div class="form-group">
+                <label>Current Password</label>
+                <input type="password" id="pw-current" placeholder="Current password" />
+              </div>
+              <div class="form-group">
+                <label>New Password</label>
+                <input type="password" id="pw-new" placeholder="New password" />
+              </div>
+              <div class="form-group">
+                <label>Confirm New Password</label>
+                <input type="password" id="pw-confirm" placeholder="Repeat new password" />
+              </div>
+            </div>
+            <button class="btn btn-primary" onclick="changePassword()">Update Password</button>
+          </div>
+        </div>
+
+        <!-- Users Panel -->
+        <div class="settings-panel" id="panel-users">
+          <div class="settings-section">
+            <div class="settings-section-title">Users & Roles</div>
+            <div class="settings-section-sub">Manage invited users and their roles.</div>
+            <div id="users-list">
+              <!-- Populated from /api/settings/users -->
+              <div class="empty">Loading users…</div>
+            </div>
+          </div>
+
+          <div class="settings-section" id="invite-section">
+            <div class="settings-section-title">Invite new user</div>
+            <div class="settings-section-sub">Create a login for a team member.</div>
+            <div class="form-row">
+              <div class="form-group">
+                <label for="invite-name">Full Name</label>
+                <input type="text" id="invite-name" placeholder="Name" />
+              </div>
+              <div class="form-group">
+                <label for="invite-email">Email</label>
+                <input type="email" id="invite-email" placeholder="Email" />
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label for="invite-role">Role</label>
+                <select id="invite-role" class="full">
+                  <option>Member</option>
+                  <option>Manager</option>
+                  <option>Admin</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="invite-password">Password</label>
+                <input type="password" id="invite-password" placeholder="Password" />
+              </div>
+            </div>
+            <div id="invite-error" style="color: var(--red); font-size: 12px; min-height: 18px; margin-bottom: 12px;"></div>
+            <button class="btn btn-primary" id="invite-btn" type="button" onclick="inviteUser()">Invite User</button>
+          </div>
+        </div>
+
+        <!-- Notifications Panel -->
+        <div class="settings-panel" id="panel-notifications">
+          <div class="settings-section">
+            <div class="settings-section-title">Notification Preferences</div>
+            <div class="settings-section-sub">Choose what alerts you receive</div>
+
+            <div class="toggle-row">
+              <div>
+                <div class="toggle-label">Low Stock Alerts</div>
+                <div class="toggle-sub">Notify when inventory falls below minimum</div>
+              </div>
+              <label class="toggle"><input type="checkbox" checked onchange="saveNotifPref()" /><span
+                  class="toggle-slider"></span></label>
+            </div>
+            <div class="toggle-row">
+              <div>
+                <div class="toggle-label">Overdue Orders</div>
+                <div class="toggle-sub">Notify when an order passes its due date</div>
+              </div>
+              <label class="toggle"><input type="checkbox" checked onchange="saveNotifPref()" /><span
+                  class="toggle-slider"></span></label>
+            </div>
+            <div class="toggle-row">
+              <div>
+                <div class="toggle-label">New Order Added</div>
+                <div class="toggle-sub">Notify when a new order is created</div>
+              </div>
+              <label class="toggle"><input type="checkbox" onchange="saveNotifPref()" /><span
+                  class="toggle-slider"></span></label>
+            </div>
+            <div class="toggle-row">
+              <div>
+                <div class="toggle-label">Order Completed</div>
+                <div class="toggle-sub">Notify when an order is marked done</div>
+              </div>
+              <label class="toggle"><input type="checkbox" onchange="saveNotifPref()" /><span
+                  class="toggle-slider"></span></label>
+            </div>
+          </div>
+        </div>
+
+        <!-- Permissions Panel -->
+        <div class="settings-panel" id="panel-permissions">
+          <div class="settings-section">
+            <div class="settings-section-title">Permissions</div>
+            <div class="settings-section-sub">Manage role permissions per resource.</div>
+            <div id="permissions-area">
+              <div class="empty">Loading permissions…</div>
+            </div>
+            <div class="settings-section-actions">
+              <div id="permissions-error" style="color: var(--red); min-height:18px;"></div>
+              <button class="btn btn-primary" id="save-perms" onclick="savePermissions()">Save Permissions</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Audit Panel -->
+        <div class="settings-panel" id="panel-audit">
+          <div class="settings-section">
+            <div class="settings-section-title">Audit Log</div>
+            <div class="settings-section-sub">View the most recent security and permissions events.</div>
+            <div style="display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:16px;">
+              <div style="font-size:13px; color:var(--ink-3);">Showing the latest entries for your site.</div>
+              <button class="btn btn-primary" onclick="loadAudit()">Reload</button>
+            </div>
+            <div id="audit-area">
+              <div class="empty">Loading audit entries…</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </main>
+  </div>
+
+  <script>
+    function showPanel(id, evt) {
+      evt = evt || window.event;
+      document.querySelectorAll('.settings-panel').forEach(p => p.classList.remove('active'));
+      document.querySelectorAll('.settings-nav-item').forEach(n => n.classList.remove('active'));
+      document.getElementById('panel-' + id).classList.add('active');
+      if (evt && evt.target) evt.target.classList.add('active');
+    }
+
+    // CSRF helper for settings mutations
+    let csrfToken = null;
+    function getCookie(name){ return document.cookie.split('; ').find(r => r.startsWith(name+'='))?.split('=')[1]; }
+    function ensureCsrf(){
+      if (csrfToken) return Promise.resolve(csrfToken);
+      return fetch('/api/csrf')
+        .then(r => r.json())
+        .then(j => { csrfToken = getCookie('XSRF-TOKEN') || j.csrf_token; return csrfToken; });
+    }
+    function csrfFetch(url, opts={}){
+      return ensureCsrf().then(tok => {
+        opts.headers = Object.assign({'X-CSRF-Token': tok}, opts.headers || {});
+        opts.credentials = opts.credentials || 'same-origin';
+        return fetch(url, opts);
+      });
+    }
+
+    function saveAccount() {
+      const payload = { name: document.getElementById('acc-name').value, email: document.getElementById('acc-email').value };
+      csrfFetch('/api/me', { method:'PUT', headers:{'Content-Type':'application/json'}, body: JSON.stringify(payload) })
+        .then(r => r.json())
+        .then(me => { alert('Account updated'); loadSidebarUserData(me); });
+    }
+
+    function saveNotifPref() {
+      // collect toggles here if backend added later
+    }
+
+    function initials(name) { return (name || '?').split(' ').map(w => w[0]).join('').slice(0,2).toUpperCase(); }
+
+    function loadAccount() {
+      fetch('/api/me')
+        .then(r => r.json())
+        .then(me => {
+          document.getElementById('acc-name').value  = me.name || '';
+          document.getElementById('acc-email').value = (me.email || '');
+        });
+    }
+
+    function loadUsers() {
+      fetch('/api/settings/users')
+        .then(r => r.json())
+        .then(users => {
+          const usersList = document.getElementById('users-list');
+          if (!users.length) {
+            usersList.innerHTML = '<div class="empty">No users yet.</div>';
+            return;
+          }
+          usersList.innerHTML = users.map(u => `
+            <div class="user-table-row">
+              <div class="user-avatar-sm">${initials(u.name)}</div>
+              <div class="user-info">
+                <div class="user-info-name">${u.name}</div>
+                <div class="user-info-email">${u.email}</div>
+              </div>
+              <span class="role-badge">${u.role}</span>
+            </div>`).join('');
+        })
+        .catch(() => {
+          document.getElementById('users-list').innerHTML = '<div class="empty">Unable to load users.</div>';
+        });
+    }
+
+    function inviteUser() {
+      const errorEl = document.getElementById('invite-error');
+      errorEl.textContent = '';
+      const name = document.getElementById('invite-name').value.trim();
+      const email = document.getElementById('invite-email').value.trim();
+      const password = document.getElementById('invite-password').value;
+      const role = document.getElementById('invite-role').value || 'Member';
+      if (!name || !email || !password) {
+        errorEl.textContent = 'Name, email, and password are required.';
+        return;
+      }
+      if (password.length < 8) {
+        errorEl.textContent = 'Password must be at least 8 characters.';
+        return;
+      }
+      const btn = document.getElementById('invite-btn');
+      btn.disabled = true;
+      btn.textContent = 'Inviting…';
+      csrfFetch('/api/settings/users', {
+        method:'POST', headers:{'Content-Type':'application/json'},
+        body: JSON.stringify({ name, email, password, role })
+      })
+      .then(r => r.ok ? r.json() : r.json().then(err => Promise.reject(err)))
+      .then(() => {
+        document.getElementById('invite-name').value = '';
+        document.getElementById('invite-email').value = '';
+        document.getElementById('invite-password').value = '';
+        document.getElementById('invite-role').value = 'Member';
+        loadUsers();
+      })
+      .catch(err => {
+        errorEl.textContent = err.error || 'Unable to invite user';
+      })
+      .finally(() => {
+        btn.disabled = false;
+        btn.textContent = 'Invite User';
+      });
+    }
+
+    // Permissions UI
+    function normalizeId(value) {
+      return `perm-${String(value || '').toLowerCase().replace(/[^a-z0-9]+/g, '-')}`;
+    }
+
+    function permCheckboxId(role, resource, action) {
+      return normalizeId(`${role}-${resource}-${action}`);
+    }
+
+    function renderPermissions(perms) {
+      const area = document.getElementById('permissions-area');
+      const roles = Object.keys(perms || {});
+      if (!roles.length) { area.innerHTML = '<div class="empty">No permissions configured.</div>'; return; }
+      const resources = Array.from(new Set(roles.flatMap(r => Object.keys(perms[r] || {}))));
+      let html = '<table class="permissions-table"><thead><tr><th>Role / Resource</th>';
+      resources.forEach(res => html += `<th data-resource="${res}">${res}</th>`);
+      html += '</tr></thead><tbody>';
+      roles.forEach(role => {
+        html += `<tr data-role="${role}"><td style="font-weight:700">${role}</td>`;
+        resources.forEach(res => {
+          const actions = perms[role]?.[res] || { create: false, update: false, delete: false };
+          const inputs = ['create','update','delete'].map(a => {
+            const id = permCheckboxId(role, res, a);
+            return `<label class="permission-checkbox"><input type="checkbox" id="${id}" ${actions[a] ? 'checked' : ''}/> ${a}</label>`;
+          }).join('');
+          html += `<td>${inputs}</td>`;
+        });
+        html += '</tr>';
+      });
+      html += '</tbody></table>';
+      area.innerHTML = html;
+    }
+
+    function loadPermissions() {
+      fetch('/api/settings/permissions').then(r => r.ok ? r.json() : Promise.reject())
+        .then(perms => {
+          renderPermissions(perms);
+          document.getElementById('permissions-error').textContent = '';
+        }).catch(() => {
+          document.getElementById('permissions-area').innerHTML = '<div class="empty">Unable to load permissions.</div>';
+        });
+    }
+
+    function savePermissions() {
+      const err = document.getElementById('permissions-error'); err.textContent = ''; err.style.color = 'var(--red)';
+      const table = document.querySelector('#permissions-area table');
+      if (!table) {
+        err.textContent = 'Permissions are not loaded yet.';
+        return;
+      }
+      const headers = Array.from(table.querySelectorAll('thead th[data-resource]')).map(h => h.dataset.resource);
+      const perms = {};
+      table.querySelectorAll('tbody tr[data-role]').forEach(row => {
+        const role = row.dataset.role.trim();
+        perms[role] = {};
+        Array.from(row.querySelectorAll('td')).slice(1).forEach((cell, idx) => {
+          const res = headers[idx];
+          perms[role][res] = {
+            create: cell.querySelector(`#${permCheckboxId(role, res, 'create')}`)?.checked === true,
+            update: cell.querySelector(`#${permCheckboxId(role, res, 'update')}`)?.checked === true,
+            delete: cell.querySelector(`#${permCheckboxId(role, res, 'delete')}`)?.checked === true,
+          };
+        });
+      });
+      const btn = document.getElementById('save-perms'); btn.disabled = true; btn.textContent = 'Saving…';
+      csrfFetch('/api/settings/permissions', { method:'PUT', headers:{'Content-Type':'application/json'}, body: JSON.stringify(perms) })
+        .then(r => r.ok ? r.json() : r.json().then(e => Promise.reject(e)))
+        .then(() => {
+          err.style.color = 'var(--green)';
+          err.textContent = 'Permissions saved successfully.';
+          loadPermissions();
+        })
+        .catch(e => {
+          err.style.color = 'var(--red)';
+          err.textContent = (e && e.error) ? e.error : 'Unable to save permissions';
+        })
+        .finally(() => { btn.disabled = false; btn.textContent = 'Save Permissions'; });
+    }
+
+    function renderAudit(entries) {
+      const area = document.getElementById('audit-area');
+      if (!entries || !entries.length) {
+        area.innerHTML = '<div class="empty">No audit entries found.</div>';
+        return;
+      }
+      area.innerHTML = entries.map(entry => {
+        const actor = entry.actor || {};
+        const details = entry.details ? JSON.stringify(entry.details) : '';
+        return `
+          <div class="settings-section" style="margin-bottom:12px; padding:14px;">
+            <div style="font-size:13px; font-weight:700; margin-bottom:4px;">${entry.action.replace(/_/g,' ').toUpperCase()} &middot; ${entry.resource}</div>
+            <div style="font-size:12px; color:var(--ink-3); margin-bottom:8px;">${entry.timestamp} by ${actor.name || 'Unknown'} (${actor.role || 'Unknown'})</div>
+            <div style="font-size:12px; white-space:pre-wrap; word-break:break-word;">${details}</div>
+          </div>`;
+      }).join('');
+    }
+
+    function loadAudit() {
+      fetch('/api/settings/audit?limit=30')
+        .then(r => r.ok ? r.json() : Promise.reject())
+        .then(entries => renderAudit(entries))
+        .catch(() => {
+          document.getElementById('audit-area').innerHTML = '<div class="empty">Unable to load audit entries.</div>';
+        });
+    }
+
+    function loadSettings() {
+      loadAccount();
+      // show/hide manager/admin sections
+      fetch('/api/me').then(r => r.json()).then(me => {
+        const invite = document.getElementById('invite-section');
+        const auditNav = document.getElementById('nav-audit');
+        const usersNav = document.getElementById('nav-users');
+        const permsNav = document.getElementById('nav-permissions');
+        const role = (me.role || '').toLowerCase();
+        const canManage = role === 'admin' || role.indexOf('manager') !== -1;
+        if (invite) invite.style.display = canManage ? '' : 'none';
+        if (usersNav) usersNav.style.display = canManage ? '' : 'none';
+        if (permsNav) permsNav.style.display = canManage ? '' : 'none';
+        if (canManage) {
+          loadUsers();
+          loadPermissions();
+        }
+        if (auditNav) {
+          if (role === 'admin') {
+            auditNav.style.display = '';
+            loadAudit();
+          } else {
+            auditNav.style.display = 'none';
+          }
+        }
+        if (!canManage) {
+          document.getElementById('panel-users').style.display = 'none';
+          document.getElementById('panel-permissions').style.display = 'none';
+          if (document.getElementById('panel-audit')) {
+            document.getElementById('panel-audit').style.display = role === 'admin' ? '' : 'none';
+          }
+        }
+      }).catch(() => {});
+    }
+
+    loadSettings();
+
+  function changePassword() {
+    const payload = {
+      current_password: document.getElementById('pw-current').value,
+      new_password: document.getElementById('pw-new').value,
+      confirm_password: document.getElementById('pw-confirm').value,
+    };
+    csrfFetch('/api/me/password', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(payload) })
+      .then(r => r.ok ? r.json() : r.json().then(b => Promise.reject(b)))
+      .then(() => {
+        alert('Password updated');
+        document.getElementById('pw-current').value='';
+        document.getElementById('pw-new').value='';
+        document.getElementById('pw-confirm').value='';
+      })
+      .catch(err => alert(err.error || 'Could not update password'));
+  }
+
+  function loadSidebarUserData(me) {
+    if (!me) { fetch('/api/me').then(r => r.json()).then(loadSidebarUserData); return; }
+    const n = document.getElementById('user-name');
+    const ro = document.getElementById('user-role');
+    const av = document.getElementById('user-avatar');
+      if (n) n.textContent = me.name || '—';
+      if (ro) ro.textContent = me.role || '—';
+      if (av) av.textContent = (me.name || '—').split(' ').map(w => w[0]).join('').slice(0,2).toUpperCase();
+    }
+
+    // Set sidebar user
+    (function loadUser() {
+      fetch('/api/me').then(r => r.json()).then(me => {
+        const n = document.getElementById('user-name');
+        const ro = document.getElementById('user-role');
+        const av = document.getElementById('user-avatar');
+        if (n) n.textContent = me.name || '—';
+        if (ro) ro.textContent = me.role || '—';
+        if (av) av.textContent = (me.name || '—').split(' ').map(w => w[0]).join('').slice(0,2).toUpperCase();
+      });
+    })();
+
+    function logout() {
+      csrfFetch('/api/logout', { method: 'POST' }).then(() => window.location = '/login');
+    }
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,850 @@
+﻿{
+  "user": {
+    "name": "John",
+    "role": "Operations Manager",
+    "avatar": ""
+  },
+  "auth": {
+    "email": "admin@omniflow.test",
+    "password": "scrypt:32768:8:1$xl2nwOrehhhoc01T$b85fe3b1e1cc4b035c76e233fe39126ca1c2d0fc9ff97dc4ecaa3b1fae7f65556a6adca6803f7297ccd3aebf6147b57cc10a13b6543c091b485c3b17b573a62c"
+  },
+  "clients": [
+    {
+      "id": "C-1001",
+      "name": "Santos & Co.",
+      "contact": "Mark Santos",
+      "email": "mark@santosco.com",
+      "phone": "+63 917 123 4567",
+      "address": "Makati, PH",
+      "total_orders": 12,
+      "active_orders": 3,
+      "since": "2023"
+    },
+    {
+      "id": "C-1002",
+      "name": "Northwind Bikes",
+      "contact": "Alex Lee",
+      "email": "ops@northwind.com",
+      "phone": "+63 917 555 8899",
+      "address": "Quezon City",
+      "total_orders": 18,
+      "active_orders": 4,
+      "since": "2022"
+    },
+    {
+      "id": "C-1003",
+      "name": "Coastal Furniture",
+      "contact": "Jamie Cruz",
+      "email": "purchasing@coastal.com",
+      "phone": "+63 927 888 1000",
+      "address": "Cebu",
+      "total_orders": 9,
+      "active_orders": 2,
+      "since": "2024"
+    },
+    {
+      "id": "C-1004",
+      "name": "Lumen Lighting",
+      "contact": "Chesca Dy",
+      "email": "hello@lumen.com",
+      "phone": "+63 917 444 1200",
+      "address": "Pasig",
+      "total_orders": 6,
+      "active_orders": 1,
+      "since": "2023"
+    },
+    {
+      "id": "C-1005",
+      "name": "Atlas Builders",
+      "contact": "Rico Tan",
+      "email": "rico@atlas.com",
+      "phone": "+63 919 432 1100",
+      "address": "Taguig",
+      "total_orders": 15,
+      "active_orders": 5,
+      "since": "2022"
+    },
+    {
+      "id": "C-1006",
+      "name": "test",
+      "contact": "tester",
+      "email": "griojohnsteve89@gmail.com",
+      "phone": "+639455573420",
+      "address": "",
+      "total_orders": 0,
+      "active_orders": 0,
+      "since": "2026"
+    }
+  ],
+  "orders": [
+    {
+      "id": "ORD-1001",
+      "client_id": "C-1001",
+      "product": "Custom Frame Set x10",
+      "qty": "10",
+      "status": "done",
+      "due_date": "2026-04-05",
+      "notes": "Rush order",
+      "amount": "120000",
+      "created_at": "2026-03-10",
+      "turnaround_days": 10
+    },
+    {
+      "id": "ORD-1002",
+      "client_id": "C-1002",
+      "product": "Carbon Wheelset",
+      "qty": "6",
+      "status": "done",
+      "due_date": "2026-04-12",
+      "notes": "",
+      "amount": "90000",
+      "created_at": "2026-03-20",
+      "turnaround_days": 12
+    },
+    {
+      "id": "ORD-1004",
+      "client_id": "C-1005",
+      "product": "Aluminum Sections",
+      "qty": 50,
+      "status": "in-progress",
+      "due_date": "2026-03-15",
+      "notes": "",
+      "amount": 75000.0,
+      "created_at": "2026-02-20",
+      "turnaround_days": 8
+    },
+    {
+      "id": "ORD-1006",
+      "client_id": "C-1004",
+      "product": "Lighting Brackets",
+      "qty": "200",
+      "status": "done",
+      "due_date": "2026-04-08",
+      "notes": "QA check required",
+      "amount": "1374737",
+      "created_at": "2026-03-18",
+      "turnaround_days": 11
+    },
+    {
+      "id": "ORD-1007",
+      "client_id": "C-1005",
+      "product": "Steel Rods",
+      "qty": "300",
+      "status": "done",
+      "due_date": "2026-04-20",
+      "notes": "",
+      "amount": "82000",
+      "created_at": "2026-03-22",
+      "turnaround_days": 14
+    },
+    {
+      "id": "ORD-1009",
+      "client_id": "C-1001",
+      "product": "test",
+      "qty": "10",
+      "status": "done",
+      "due_date": "2026-04-16",
+      "notes": "",
+      "amount": "0",
+      "created_at": "2026-04-02",
+      "turnaround_days": 7
+    },
+    {
+      "id": "ORD-1011",
+      "client_id": "C-1001",
+      "product": "Custom Frame Set x10",
+      "qty": 10,
+      "status": "cancelled",
+      "due_date": "2026-04-05",
+      "notes": "",
+      "amount": 200000.0,
+      "created_at": "2026-04-02",
+      "turnaround_days": 7
+    },
+    {
+      "id": "ORD-1012",
+      "client_id": "C-1006",
+      "product": "test",
+      "qty": 12,
+      "status": "done",
+      "due_date": "2026-04-05",
+      "notes": "",
+      "amount": 12000.0,
+      "created_at": "2026-04-06",
+      "turnaround_days": 7
+    }
+  ],
+  "inventory": [
+    {
+      "id": "INV-1001",
+      "name": "Steel Rod",
+      "category": "Raw Material",
+      "stock": 120,
+      "min_stock": 80,
+      "unit": "pcs"
+    },
+    {
+      "id": "INV-1003",
+      "name": "Carbon Fiber Weave",
+      "category": "Raw Material",
+      "stock": 39,
+      "min_stock": 30,
+      "unit": "rolls"
+    },
+    {
+      "id": "INV-1004",
+      "name": "Epoxy Resin",
+      "category": "Consumable",
+      "stock": "20",
+      "min_stock": "10",
+      "unit": "kg"
+    },
+    {
+      "id": "INV-1005",
+      "name": "Packaging Boxes",
+      "category": "Consumable",
+      "stock": 161,
+      "min_stock": 150,
+      "unit": "pcs"
+    },
+    {
+      "id": "INV-1006",
+      "name": "Bolts M6",
+      "category": "Hardware",
+      "stock": 600,
+      "min_stock": 400,
+      "unit": "pcs"
+    },
+    {
+      "id": "INV-1007",
+      "name": "Powder Coat (Black)",
+      "category": "Consumable",
+      "stock": "30",
+      "min_stock": "20",
+      "unit": "kg"
+    }
+  ],
+  "production": [
+    {
+      "order_id": "ORD-1001",
+      "product": "Custom Frame Set x10",
+      "client_name": "Santos & Co.",
+      "status": "in-progress",
+      "priority": "high",
+      "due_date": "2026-04-05"
+    },
+    {
+      "order_id": "ORD-1002",
+      "product": "Carbon Wheelset",
+      "client_name": "Northwind Bikes",
+      "status": "queued",
+      "priority": "normal",
+      "due_date": "2026-04-12"
+    },
+    {
+      "order_id": "ORD-1003",
+      "product": "Wooden Panels",
+      "client_name": "Coastal Furniture",
+      "status": "review",
+      "priority": "normal",
+      "due_date": "2026-04-02"
+    },
+    {
+      "order_id": "ORD-1004",
+      "product": "Aluminum Sections",
+      "client_name": "Atlas Builders",
+      "status": "done",
+      "priority": "normal",
+      "due_date": "2026-03-15"
+    },
+    {
+      "order_id": "ORD-1006",
+      "product": "Lighting Brackets",
+      "client_name": "Lumen Lighting",
+      "status": "in-progress",
+      "priority": "high",
+      "due_date": "2026-04-08"
+    },
+    {
+      "order_id": "ORD-1007",
+      "product": "Steel Rods",
+      "client_name": "Atlas Builders",
+      "status": "queued",
+      "priority": "high",
+      "due_date": "2026-04-20"
+    }
+  ],
+  "activity": [
+    {
+      "id": 93,
+      "message": "Updated inventory item Carbon Fiber Weave",
+      "timestamp": "2026-04-07 02:33",
+      "type": "info"
+    },
+    {
+      "id": 92,
+      "message": "Updated inventory item Carbon Fiber Weave",
+      "timestamp": "2026-04-07 02:33",
+      "type": "info"
+    },
+    {
+      "id": 91,
+      "message": "Updated order ORD-1004",
+      "timestamp": "2026-04-07 02:04",
+      "type": "info"
+    },
+    {
+      "id": 90,
+      "message": "Deleted client testt",
+      "timestamp": "2026-04-07 01:07",
+      "type": "warning"
+    },
+    {
+      "id": 89,
+      "message": "Added client testt",
+      "timestamp": "2026-04-07 01:07",
+      "type": "info"
+    },
+    {
+      "id": 88,
+      "message": "Updated inventory item Packaging Boxes",
+      "timestamp": "2026-04-07 01:06",
+      "type": "info"
+    },
+    {
+      "id": 87,
+      "message": "Deleted inventory item Packaging Boxes",
+      "timestamp": "2026-04-07 01:03",
+      "type": "warning"
+    },
+    {
+      "id": 86,
+      "message": "Added inventory item Packaging Boxes",
+      "timestamp": "2026-04-07 01:03",
+      "type": "info"
+    },
+    {
+      "id": 85,
+      "message": "Deleted inventory item Packaging Boxes",
+      "timestamp": "2026-04-07 01:03",
+      "type": "warning"
+    },
+    {
+      "id": 84,
+      "message": "Added inventory item Packaging Boxes",
+      "timestamp": "2026-04-07 01:02",
+      "type": "info"
+    },
+    {
+      "id": 83,
+      "message": "Updated inventory item Carbon Fiber Weave",
+      "timestamp": "2026-04-07 00:32",
+      "type": "info"
+    },
+    {
+      "id": 82,
+      "message": "Updated inventory item Carbon Fiber Weave",
+      "timestamp": "2026-04-07 00:32",
+      "type": "info"
+    },
+    {
+      "id": 81,
+      "message": "Updated inventory item Carbon Fiber Weave",
+      "timestamp": "2026-04-07 00:32",
+      "type": "info"
+    },
+    {
+      "id": 80,
+      "message": "Updated inventory item Carbon Fiber Weave",
+      "timestamp": "2026-04-07 00:32",
+      "type": "info"
+    },
+    {
+      "id": 79,
+      "message": "Updated inventory item Carbon Fiber Weave",
+      "timestamp": "2026-04-07 00:32",
+      "type": "info"
+    },
+    {
+      "id": 78,
+      "message": "Updated inventory item Carbon Fiber Weave",
+      "timestamp": "2026-04-07 00:32",
+      "type": "info"
+    },
+    {
+      "id": 77,
+      "message": "Updated inventory item Carbon Fiber Weave",
+      "timestamp": "2026-04-07 00:32",
+      "type": "info"
+    },
+    {
+      "id": 76,
+      "message": "Updated inventory item Carbon Fiber Weave",
+      "timestamp": "2026-04-07 00:32",
+      "type": "info"
+    },
+    {
+      "id": 75,
+      "message": "Updated inventory item Carbon Fiber Weave",
+      "timestamp": "2026-04-07 00:32",
+      "type": "info"
+    },
+    {
+      "id": 74,
+      "message": "Updated inventory item Carbon Fiber Weave",
+      "timestamp": "2026-04-07 00:32",
+      "type": "info"
+    },
+    {
+      "id": 73,
+      "message": "Updated inventory item Carbon Fiber Weave",
+      "timestamp": "2026-04-07 00:32",
+      "type": "info"
+    },
+    {
+      "id": 72,
+      "message": "Updated inventory item Carbon Fiber Weave",
+      "timestamp": "2026-04-07 00:32",
+      "type": "info"
+    },
+    {
+      "id": 71,
+      "message": "Updated inventory item Carbon Fiber Weave",
+      "timestamp": "2026-04-07 00:32",
+      "type": "info"
+    },
+    {
+      "id": 70,
+      "message": "Updated inventory item Packaging Boxes",
+      "timestamp": "2026-04-07 00:32",
+      "type": "info"
+    },
+    {
+      "id": 69,
+      "message": "Updated inventory item Carbon Fiber Weave",
+      "timestamp": "2026-04-07 00:32",
+      "type": "info"
+    },
+    {
+      "id": 68,
+      "message": "Updated inventory item Carbon Fiber Weave",
+      "timestamp": "2026-04-07 00:32",
+      "type": "info"
+    },
+    {
+      "id": 67,
+      "message": "Updated inventory item Carbon Fiber Weave",
+      "timestamp": "2026-04-07 00:32",
+      "type": "info"
+    },
+    {
+      "id": 66,
+      "message": "Updated inventory item Carbon Fiber Weave",
+      "timestamp": "2026-04-07 00:32",
+      "type": "info"
+    },
+    {
+      "id": 65,
+      "message": "Updated inventory item Carbon Fiber Weave",
+      "timestamp": "2026-04-07 00:32",
+      "type": "info"
+    },
+    {
+      "id": 64,
+      "message": "Updated inventory item Carbon Fiber Weave",
+      "timestamp": "2026-04-07 00:32",
+      "type": "info"
+    },
+    {
+      "id": 63,
+      "message": "Updated inventory item Carbon Fiber Weave",
+      "timestamp": "2026-04-07 00:32",
+      "type": "info"
+    },
+    {
+      "id": 62,
+      "message": "Updated inventory item Carbon Fiber Weave",
+      "timestamp": "2026-04-07 00:32",
+      "type": "info"
+    },
+    {
+      "id": 61,
+      "message": "Updated inventory item Carbon Fiber Weave",
+      "timestamp": "2026-04-07 00:32",
+      "type": "info"
+    },
+    {
+      "id": 60,
+      "message": "Updated inventory item Carbon Fiber Weave",
+      "timestamp": "2026-04-07 00:32",
+      "type": "info"
+    },
+    {
+      "id": 59,
+      "message": "Updated inventory item Carbon Fiber Weave",
+      "timestamp": "2026-04-07 00:32",
+      "type": "info"
+    },
+    {
+      "id": 58,
+      "message": "Updated inventory item Carbon Fiber Weave",
+      "timestamp": "2026-04-07 00:32",
+      "type": "info"
+    },
+    {
+      "id": 57,
+      "message": "Updated inventory item Carbon Fiber Weave",
+      "timestamp": "2026-04-07 00:32",
+      "type": "info"
+    },
+    {
+      "id": 56,
+      "message": "Updated inventory item Carbon Fiber Weave",
+      "timestamp": "2026-04-07 00:32",
+      "type": "info"
+    },
+    {
+      "id": 55,
+      "message": "Updated inventory item Carbon Fiber Weave",
+      "timestamp": "2026-04-07 00:32",
+      "type": "info"
+    },
+    {
+      "id": 54,
+      "message": "Updated inventory item Carbon Fiber Weave",
+      "timestamp": "2026-04-07 00:32",
+      "type": "info"
+    },
+    {
+      "id": 53,
+      "message": "Updated inventory item Carbon Fiber Weave",
+      "timestamp": "2026-04-07 00:32",
+      "type": "info"
+    },
+    {
+      "id": 52,
+      "message": "Updated inventory item Carbon Fiber Weave",
+      "timestamp": "2026-04-07 00:32",
+      "type": "info"
+    },
+    {
+      "id": 51,
+      "message": "Updated inventory item Carbon Fiber Weave",
+      "timestamp": "2026-04-07 00:32",
+      "type": "info"
+    },
+    {
+      "id": 50,
+      "message": "Updated inventory item Carbon Fiber Weave",
+      "timestamp": "2026-04-07 00:32",
+      "type": "info"
+    },
+    {
+      "id": 49,
+      "message": "Updated inventory item Carbon Fiber Weave",
+      "timestamp": "2026-04-07 00:32",
+      "type": "info"
+    },
+    {
+      "id": 48,
+      "message": "Updated inventory item Carbon Fiber Weave",
+      "timestamp": "2026-04-07 00:32",
+      "type": "info"
+    },
+    {
+      "id": 47,
+      "message": "Updated inventory item Carbon Fiber Weave",
+      "timestamp": "2026-04-07 00:32",
+      "type": "info"
+    },
+    {
+      "id": 46,
+      "message": "Updated order ORD-1011",
+      "timestamp": "2026-04-06 22:30",
+      "type": "info"
+    },
+    {
+      "id": 45,
+      "message": "Updated order ORD-1011",
+      "timestamp": "2026-04-06 22:30",
+      "type": "info"
+    },
+    {
+      "id": 44,
+      "message": "Updated order ORD-1012",
+      "timestamp": "2026-04-06 22:29",
+      "type": "info"
+    },
+    {
+      "id": 43,
+      "message": "Deleted client test",
+      "timestamp": "2026-04-06 21:46",
+      "type": "warning"
+    },
+    {
+      "id": 42,
+      "message": "Added client test",
+      "timestamp": "2026-04-06 21:46",
+      "type": "info"
+    },
+    {
+      "id": 41,
+      "message": "Added client test",
+      "timestamp": "2026-04-06 21:45",
+      "type": "info"
+    },
+    {
+      "id": 40,
+      "message": "Deleted client test",
+      "timestamp": "2026-04-06 21:45",
+      "type": "warning"
+    },
+    {
+      "id": 39,
+      "message": "Updated inventory item Packaging Boxes",
+      "timestamp": "2026-04-06 21:39",
+      "type": "info"
+    },
+    {
+      "id": 38,
+      "message": "Updated inventory item Carbon Fiber Weave",
+      "timestamp": "2026-04-06 21:38",
+      "type": "info"
+    },
+    {
+      "id": 37,
+      "message": "Updated inventory item Carbon Fiber Weave",
+      "timestamp": "2026-04-06 21:38",
+      "type": "info"
+    },
+    {
+      "id": 36,
+      "message": "Updated inventory item Carbon Fiber Weave",
+      "timestamp": "2026-04-06 21:37",
+      "type": "info"
+    },
+    {
+      "id": 35,
+      "message": "Updated inventory item Carbon Fiber Weave",
+      "timestamp": "2026-04-06 21:37",
+      "type": "info"
+    },
+    {
+      "id": 34,
+      "message": "Updated order ORD-1012",
+      "timestamp": "2026-04-06 21:35",
+      "type": "info"
+    },
+    {
+      "id": 33,
+      "message": "Created order ORD-1012",
+      "timestamp": "2026-04-06 20:39",
+      "type": "info"
+    },
+    {
+      "id": 32,
+      "message": "Updated inventory item Carbon Fiber Weave",
+      "timestamp": "2026-04-06 19:49",
+      "type": "info"
+    },
+    {
+      "id": 31,
+      "message": "Updated order ORD-1007",
+      "timestamp": "2026-04-06 19:49",
+      "type": "info"
+    },
+    {
+      "id": 30,
+      "message": "Updated order ORD-1009",
+      "timestamp": "2026-04-06 19:49",
+      "type": "info"
+    },
+    {
+      "id": 29,
+      "message": "Updated order ORD-1002",
+      "timestamp": "2026-04-06 19:49",
+      "type": "info"
+    },
+    {
+      "id": 28,
+      "message": "Updated order ORD-1006",
+      "timestamp": "2026-04-06 19:49",
+      "type": "info"
+    },
+    {
+      "id": 27,
+      "message": "Updated order ORD-1011",
+      "timestamp": "2026-04-06 19:48",
+      "type": "info"
+    },
+    {
+      "id": 26,
+      "message": "Added client test",
+      "timestamp": "2026-04-05 14:15",
+      "type": "info"
+    },
+    {
+      "id": 25,
+      "message": "Deleted order ORD-1010",
+      "timestamp": "2026-04-05 13:54",
+      "type": "warning"
+    },
+    {
+      "id": 24,
+      "message": "Updated order ORD-1006",
+      "timestamp": "2026-04-05 13:53",
+      "type": "info"
+    },
+    {
+      "id": 23,
+      "message": "Updated order ORD-1006",
+      "timestamp": "2026-04-05 13:53",
+      "type": "info"
+    },
+    {
+      "id": 22,
+      "message": "Updated order ORD-1006",
+      "timestamp": "2026-04-05 13:53",
+      "type": "info"
+    },
+    {
+      "id": 21,
+      "message": "Updated inventory item Carbon Fiber Weave",
+      "timestamp": "2026-04-05 13:49",
+      "type": "info"
+    },
+    {
+      "id": 20,
+      "message": "Updated order ORD-1004",
+      "timestamp": "2026-04-05 13:47",
+      "type": "info"
+    },
+    {
+      "id": 19,
+      "message": "Updated inventory item Carbon Fiber Weave",
+      "timestamp": "2026-04-02 14:27",
+      "type": "info"
+    },
+    {
+      "id": 18,
+      "message": "Updated inventory item Carbon Fiber Weave",
+      "timestamp": "2026-04-02 14:27",
+      "type": "info"
+    },
+    {
+      "id": 17,
+      "message": "Updated inventory item Carbon Fiber Weave",
+      "timestamp": "2026-04-02 14:27",
+      "type": "info"
+    },
+    {
+      "id": 16,
+      "message": "Updated inventory item Carbon Fiber Weave",
+      "timestamp": "2026-04-02 14:27",
+      "type": "info"
+    },
+    {
+      "id": 15,
+      "message": "Updated inventory item Carbon Fiber Weave",
+      "timestamp": "2026-04-02 14:27",
+      "type": "info"
+    },
+    {
+      "id": 14,
+      "message": "Updated inventory item Carbon Fiber Weave",
+      "timestamp": "2026-04-02 14:27",
+      "type": "info"
+    },
+    {
+      "id": 13,
+      "message": "Updated inventory item Carbon Fiber Weave",
+      "timestamp": "2026-04-02 14:27",
+      "type": "info"
+    },
+    {
+      "id": 12,
+      "message": "Updated inventory item Carbon Fiber Weave",
+      "timestamp": "2026-04-02 14:27",
+      "type": "info"
+    },
+    {
+      "id": 11,
+      "message": "Updated order ORD-1001",
+      "timestamp": "2026-04-02 12:49",
+      "type": "info"
+    },
+    {
+      "id": 10,
+      "message": "Created order ORD-1011",
+      "timestamp": "2026-04-02 12:49",
+      "type": "info"
+    },
+    {
+      "id": 9,
+      "message": "Updated order ORD-1004",
+      "timestamp": "2026-04-02 12:42",
+      "type": "info"
+    },
+    {
+      "id": 8,
+      "message": "Updated order ORD-1006",
+      "timestamp": "2026-04-02 12:42",
+      "type": "info"
+    },
+    {
+      "id": 7,
+      "message": "Updated order ORD-1001",
+      "timestamp": "2026-04-02 12:42",
+      "type": "info"
+    },
+    {
+      "id": 6,
+      "message": "Updated inventory item Carbon Fiber Weave",
+      "timestamp": "2026-04-02 12:24",
+      "type": "info"
+    },
+    {
+      "id": 1,
+      "message": "Order ORD-1004 marked completed",
+      "timestamp": "2026-03-29 15:20",
+      "type": "success"
+    },
+    {
+      "id": 2,
+      "message": "Low stock alert: Epoxy Resin",
+      "timestamp": "2026-03-29 14:02",
+      "type": "warning"
+    },
+    {
+      "id": 3,
+      "message": "New order ORD-1007 created",
+      "timestamp": "2026-03-28 17:45",
+      "type": "info"
+    },
+    {
+      "id": 4,
+      "message": "Client Atlas Builders updated billing address",
+      "timestamp": "2026-03-28 11:18",
+      "type": "info"
+    },
+    {
+      "id": 5,
+      "message": "Inspection scheduled for Lighting Brackets",
+      "timestamp": "2026-03-27 09:10",
+      "type": "warning"
+    }
+  ],
+  "shop": {
+    "name": "OmniFlow",
+    "industry": "Manufacturing",
+    "address": "",
+    "email": "admin@omniflow.test"
+  }
+} \n  ],\n  "shop": {
+    "name": "OmniFlow",
+    "industry": "Manufacturing",
+    "address": "",
+    "email": "admin@omniflow.test"
+  }
+}
+

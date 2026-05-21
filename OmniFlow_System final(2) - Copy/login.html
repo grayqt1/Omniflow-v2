@@ -1,0 +1,76 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>OmniFlow — Login</title>
+  <link rel="stylesheet" href="style.css"/>
+  <style>
+    body { display:flex; align-items:center; justify-content:center; min-height:100vh; background: var(--bg); }
+    .auth-card { width: 380px; max-width: 92vw; background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 28px; box-shadow: 0 10px 40px rgba(0,0,0,0.08); }
+    .logo { display:flex; align-items:center; gap:10px; margin-bottom:22px; font-weight:800; font-size:20px; letter-spacing:-0.3px; }
+    .logo .mark { width:36px; height:36px; border-radius:10px; background:linear-gradient(135deg,#2F6FED,#5E8BFF); display:grid; place-items:center; color:white; font-weight:800; box-shadow: 0 8px 20px rgba(47,111,237,0.25); }
+    label { display:block; font-size:12px; font-weight:700; color: var(--ink-2); margin-bottom:6px; }
+    input { width:100%; padding:11px 12px; border:1px solid var(--border); border-radius:10px; font-size:14px; background: var(--bg); color: var(--ink); margin-bottom:14px; transition:border-color 0.15s, background 0.15s; }
+    input::placeholder { color: var(--ink-3); }
+    input:focus { outline:none; border-color: var(--blue); background: var(--surface); box-shadow: 0 0 0 3px rgba(47,111,237,0.12); }
+    .btn { width:100%; height:44px; border:none; border-radius:10px; background: var(--blue); color:white; font-weight:700; font-size:14px; cursor:pointer; transition: transform 0.1s ease, box-shadow 0.15s; }
+    .btn:hover { background:#285fd5; }
+    .btn:active { transform: translateY(1px); }
+    .btn:disabled { opacity:0.6; cursor:not-allowed; }
+    .error { color:#DC2626; font-size:12px; margin-bottom:10px; min-height:16px; }
+  </style>
+</head>
+<body>
+  <div class="auth-card">
+    <div class="logo"><div class="mark">OF</div>OmniFlow</div>
+    <div class="error" id="error"></div>
+    <label for="email">Email</label>
+    <input type="email" id="email" placeholder="Email address" autocomplete="username" autofocus/>
+    <label for="password">Password</label>
+    <input type="password" id="password" placeholder="Password" autocomplete="current-password"/>
+    <button class="btn" id="login-btn" onclick="login()">Sign In</button>
+  </div>
+
+  <script>
+    const emailInput = document.getElementById('email');
+    const passInput  = document.getElementById('password');
+    const errorEl    = document.getElementById('error');
+    const btn        = document.getElementById('login-btn');
+
+    function setLoading(state) {
+      btn.disabled = state;
+      btn.textContent = state ? 'Signing in…' : 'Sign In';
+    }
+
+    function getCookie(name) {
+      return document.cookie.split('; ').find(row => row.startsWith(name + '='))?.split('=')[1];
+    }
+
+    function clearError() { errorEl.textContent = ''; }
+    emailInput.addEventListener('input', clearError);
+    passInput.addEventListener('input', clearError);
+
+    function login() {
+      const email = emailInput.value.trim();
+      const password = passInput.value;
+      if (!email || !password) { errorEl.textContent = 'Enter email and password'; return; }
+      setLoading(true);
+      fetch('/api/login', {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password })
+      }).then(r => r.json().then(body => ({ ok:r.ok, body }))).then(res => {
+        if (!res.ok) {
+          errorEl.textContent = res.body.error || 'Login failed';
+          setLoading(false);
+          return;
+        }
+        // csrf cookie is set by server; nothing else needed
+        window.location = '/home.html';
+      }).catch(() => { errorEl.textContent = 'Network error'; setLoading(false); });
+    }
+
+    document.addEventListener('keydown', e => { if (e.key === 'Enter') login(); });
+  </script>
+</body>
+</html>

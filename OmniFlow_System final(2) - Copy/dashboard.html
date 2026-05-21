@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>OmniFlow — Dashboard</title>
+  <link rel="stylesheet" href="style.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+  <style>
+    .chart-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-bottom: 16px;
+    }
+
+    .chart-grid-3 {
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      gap: 16px;
+      margin-bottom: 16px;
+    }
+
+    .chart-body {
+      padding: 20px;
+    }
+
+    .chart-wrap {
+      position: relative;
+      height: 220px;
+    }
+
+    .period-tabs {
+      display: flex;
+      gap: 3px;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 3px;
+    }
+
+    .period-tab {
+      font-size: 12px;
+      font-weight: 600;
+      padding: 4px 11px;
+      border-radius: 6px;
+      border: none;
+      background: transparent;
+      color: var(--ink-3);
+      cursor: pointer;
+    }
+
+    .period-tab.active {
+      background: var(--surface);
+      color: var(--blue);
+      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+    }
+
+    .kpi-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+
+    .kpi-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 18px;
+    }
+
+    .kpi-label {
+      font-size: 11.5px;
+      font-weight: 600;
+      color: var(--ink-3);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 8px;
+    }
+
+    .kpi-value {
+      font-size: 24px;
+      font-weight: 700;
+      letter-spacing: -0.5px;
+    }
+
+    .kpi-change {
+      font-size: 11.5px;
+      font-weight: 700;
+      padding: 2px 7px;
+      border-radius: 20px;
+      display: inline-block;
+      margin-top: 5px;
+    }
+
+    .up {
+      background: #DCFCE7;
+      color: #16A34A;
+    }
+
+    .down {
+      background: #FEE2E2;
+      color: #DC2626;
+    }
+
+    .flat {
+      background: #F1F5F9;
+      color: #64748B;
+    }
+
+    .donut-layout {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      padding: 20px;
+    }
+
+    .donut-wrap {
+      width: 150px;
+      height: 150px;
+      flex-shrink: 0;
+    }
+
+    .legend-list {
+      display: flex;
+      flex-direction: column;
+      gap: 9px;
+    }
+
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 13px;
+    }
+
+    .legend-dot {
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+
+    .legend-val {
+      font-family: 'DM Mono', monospace;
+      font-size: 12px;
+      font-weight: 700;
+      margin-left: auto;
+    }
+
+    .insight-bar {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+    }
+
+    .insight-pill {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 10px 14px;
+      font-size: 13px;
+      color: var(--ink-2);
+      flex: 1;
+      min-width: 150px;
+    }
+
+    .insight-pill strong {
+      color: var(--ink);
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="sidebar-logo">
+      <div class="logo-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.2" stroke-linecap="round"
+          stroke-linejoin="round">
+          <polygon
+            points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+        </svg>
+      </div>
+      <span class="logo-text">Omni<span>Flow</span></span>
+    </div>
+    <nav>
+      <div class="nav-label">Main</div>
+      <a class="nav-item" href="home.html">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+          stroke-linejoin="round">
+          <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
+          <polyline points="9 22 9 12 15 12 15 22" />
+        </svg>
+        Home
+      </a>
+      <a class="nav-item active" href="dashboard.html">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+          stroke-linejoin="round">
+          <rect x="3" y="3" width="7" height="7" />
+          <rect x="14" y="3" width="7" height="7" />
+          <rect x="14" y="14" width="7" height="7" />
+          <rect x="3" y="14" width="7" height="7" />
+        </svg>
+        Dashboard
+      </a>
+      <div class="nav-divider"></div>
+      <div class="nav-label">Operations</div>
+      <a class="nav-item" href="orders.html">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+          stroke-linejoin="round">
+          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+          <polyline points="14 2 14 8 20 8" />
+        </svg>
+        Order Management
+      </a>
+      <a class="nav-item" href="clients.html">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+          stroke-linejoin="round">
+          <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+          <circle cx="9" cy="7" r="4" />
+          <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
+          <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+        </svg>
+        Client List
+      </a>
+      <a class="nav-item" href="production.html">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+          stroke-linejoin="round">
+          <rect x="3" y="4" width="18" height="18" rx="2" />
+          <line x1="16" y1="2" x2="16" y2="6" />
+          <line x1="8" y1="2" x2="8" y2="6" />
+          <line x1="3" y1="10" x2="21" y2="10" />
+        </svg>
+        Production
+      </a>
+      <a class="nav-item" href="inventory.html">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+          stroke-linejoin="round">
+          <path
+            d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z" />
+        </svg>
+        Inventory
+      </a>
+      <div class="nav-divider"></div>
+      <div class="nav-label">Insights</div>
+      <a class="nav-item" href="reports.html">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+          stroke-linejoin="round">
+          <line x1="18" y1="20" x2="18" y2="10" />
+          <line x1="12" y1="20" x2="12" y2="4" />
+          <line x1="6" y1="20" x2="6" y2="14" />
+        </svg>
+        Reports
+      </a>
+      <a class="nav-item" href="activity.html">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+          stroke-linejoin="round">
+          <path d="M22 12h-4l-3 9L9 3l-3 9H2" />
+        </svg>
+        Activity
+      </a>
+      <div class="nav-divider"></div>
+      <a class="nav-item" href="settings.html">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+          stroke-linejoin="round">
+          <circle cx="12" cy="12" r="3" />
+          <path d="M19.07 4.93a10 10 0 0 1 0 14.14M4.93 4.93a10 10 0 0 0 0 14.14" />
+        </svg>
+        Settings
+      </a>
+    </nav>
+  <div class="sidebar-footer">
+    <div class="avatar" id="user-avatar"></div>
+    <div>
+      <div class="user-name" id="user-name">—</div>
+      <div class="user-role" id="user-role">—</div>
+    </div>
+    <button class="logout-btn" onclick="logout()">Logout</button>
+  </div>
+</aside>
+
+  <!-- MAIN -->
+  <div class="main">
+    <header class="topbar">
+      <span class="topbar-title">Dashboard</span>
+      <div class="topbar-right">
+        <div class="period-tabs">
+          <button class="period-tab" onclick="setPeriod(this)">7D</button>
+          <button class="period-tab active" onclick="setPeriod(this)">30D</button>
+          <button class="period-tab" onclick="setPeriod(this)">90D</button>
+          <button class="period-tab" onclick="setPeriod(this)">1Y</button>
+        </div>
+      </div>
+    </header>
+
+    <main class="content">
+      <div class="page-header">
+        <div class="page-title">Analytics Dashboard</div>
+        <!-- subtitle shows selected period, e.g. "Last 30 days" -->
+        <div class="page-sub" id="period-label">Last 30 days</div>
+      </div>
+
+      <!-- KPI Cards — from /api/dashboard/kpis -->
+      <div class="kpi-grid">
+        <div class="kpi-card">
+          <div class="kpi-label">Total Revenue</div>
+          <div class="kpi-value" id="kpi-revenue">—</div>
+          <span class="kpi-change flat" id="kpi-revenue-change">—</span>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-label">Orders Completed</div>
+          <div class="kpi-value" id="kpi-orders">—</div>
+          <span class="kpi-change flat" id="kpi-orders-change">—</span>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-label">Avg. Turnaround</div>
+          <div class="kpi-value" id="kpi-turnaround">—</div>
+          <span class="kpi-change flat" id="kpi-turnaround-change">—</span>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-label">Cancelled Orders</div>
+          <div class="kpi-value" id="kpi-cancelled">—</div>
+          <span class="kpi-change flat" id="kpi-cancelled-change">—</span>
+        </div>
+      </div>
+
+      <!-- Revenue chart + Order status donut -->
+      <div class="chart-grid-3">
+        <div class="card">
+          <div class="card-header"><span class="card-title">Revenue Over Time</span></div>
+          <div class="chart-body">
+            <div class="chart-wrap">
+              <!-- Chart populated from /api/dashboard/revenue -->
+              <canvas id="revenueChart"></canvas>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-header"><span class="card-title">Order Status</span></div>
+          <div class="donut-layout">
+            <div class="donut-wrap">
+              <!-- Chart populated from /api/dashboard/order-status -->
+              <canvas id="statusDonut"></canvas>
+            </div>
+            <div class="legend-list" id="status-legend">
+              <!-- Populated by JS -->
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Production throughput -->
+      <div class="chart-grid">
+        <div class="card">
+          <div class="card-header"><span class="card-title">Production Throughput</span><span class="page-sub">Jobs
+              completed per week</span></div>
+          <div class="chart-body">
+            <div class="chart-wrap">
+              <!-- Chart populated from /api/dashboard/throughput -->
+              <canvas id="throughputChart"></canvas>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-header"><span class="card-title">Top Products</span></div>
+          <!-- Populated from /api/dashboard/top-products -->
+          <div id="top-products">
+            <div class="empty">Loading…</div>
+          </div>
+        </div>
+      </div>
+
+    </main>
+  </div>
+
+  <script>
+    Chart.defaults.font.family = "'Figtree', sans-serif";
+    Chart.defaults.color = '#9AA5B4';
+
+    const BLUE = '#2F6FED';
+    const GREEN = '#22C55E';
+    const AMBER = '#F59E0B';
+    const RED = '#EF4444';
+    const GRAY = '#94A3B8';
+    const BDR = '#E4E8EF';
+
+    function setPeriod(el) {
+      document.querySelectorAll('.period-tab').forEach(t => t.classList.remove('active'));
+      el.classList.add('active');
+      const map = { '7D': 'Last 7 days', '30D': 'Last 30 days', '90D': 'Last 90 days', '1Y': 'Last 12 months' };
+      document.getElementById('period-label').textContent = map[el.textContent] || '';
+      loadDashboard(el.textContent);
+    }
+
+    // ── Charts (empty shells — data from Flask /api/dashboard/* endpoints) ──
+
+    // Revenue bar chart
+    const revenueChart = new Chart(document.getElementById('revenueChart'), {
+      type: 'bar',
+      data: { labels: [], datasets: [{ label: 'Revenue', data: [], backgroundColor: BLUE + '80', borderRadius: 6, borderSkipped: false }] },
+      options: {
+        responsive: true, maintainAspectRatio: false,
+        plugins: { legend: { display: false } },
+        scales: {
+          x: { grid: { display: false }, border: { display: false } },
+          y: { grid: { color: BDR }, border: { display: false }, ticks: { callback: v => '₱' + (v / 1000).toFixed(0) + 'k' } }
+        }
+      }
+    });
+
+    // Status donut
+    const statusDonut = new Chart(document.getElementById('statusDonut'), {
+      type: 'doughnut',
+      data: { labels: [], datasets: [{ data: [], backgroundColor: [GREEN, BLUE, AMBER, GRAY, RED], borderWidth: 0, hoverOffset: 6 }] },
+      options: { responsive: true, maintainAspectRatio: false, cutout: '70%', plugins: { legend: { display: false } } }
+    });
+
+    // Throughput line chart
+    const throughputChart = new Chart(document.getElementById('throughputChart'), {
+      type: 'line',
+      data: { labels: [], datasets: [{ label: 'Jobs', data: [], borderColor: BLUE, backgroundColor: BLUE + '15', borderWidth: 2.5, pointRadius: 4, pointBackgroundColor: BLUE, tension: 0.4, fill: true }] },
+      options: {
+        responsive: true, maintainAspectRatio: false,
+        plugins: { legend: { display: false } },
+        scales: {
+          x: { grid: { display: false }, border: { display: false } },
+          y: { grid: { color: BDR }, border: { display: false } }
+        }
+      }
+    });
+
+    // Live data fetches
+    function loadDashboard(period = '30D') {
+      fetch(`/api/dashboard/kpis?period=${period}`)
+        .then(r => r.json())
+        .then(data => {
+          document.getElementById('kpi-revenue').textContent           = '₱' + data.revenue.toLocaleString();
+          document.getElementById('kpi-orders').textContent            = data.orders_completed;
+          document.getElementById('kpi-turnaround').textContent        = data.avg_turnaround + ' days';
+          document.getElementById('kpi-cancelled').textContent         = data.cancelled;
+          document.getElementById('kpi-revenue-change').textContent    = data.revenue_change;
+          document.getElementById('kpi-orders-change').textContent     = data.orders_change;
+          document.getElementById('kpi-turnaround-change').textContent = data.turnaround_change;
+          document.getElementById('kpi-cancelled-change').textContent  = data.cancelled_change;
+        });
+
+      fetch('/api/dashboard/revenue')
+        .then(r => r.json())
+        .then(data => {
+          revenueChart.data.labels = data.labels;
+          revenueChart.data.datasets[0].data = data.values;
+          revenueChart.update();
+        });
+
+      fetch('/api/dashboard/order-status')
+        .then(r => r.json())
+        .then(data => {
+          statusDonut.data.labels = data.labels;
+          statusDonut.data.datasets[0].data = data.values;
+          statusDonut.update();
+          const colors = [GREEN, BLUE, AMBER, GRAY, RED];
+          document.getElementById('status-legend').innerHTML = data.labels.map((l, i) =>
+            `<div class="legend-item">
+              <div class="legend-dot" style="background:${colors[i]}"></div>
+              <span>${l}</span>
+              <span class="legend-val">${data.values[i]}</span>
+            </div>`
+          ).join('');
+        });
+
+      fetch('/api/dashboard/throughput')
+        .then(r => r.json())
+        .then(data => {
+          throughputChart.data.labels = data.labels;
+          throughputChart.data.datasets[0].data = data.values;
+          throughputChart.update();
+        });
+
+      fetch('/api/dashboard/top-products')
+        .then(r => r.json())
+        .then(products => {
+          const max = products[0]?.count || 1;
+          document.getElementById('top-products').innerHTML = products.map((p, i) => `
+            <div style="padding:10px 20px; border-bottom:1px solid var(--border)">
+              <div style="display:flex; justify-content:space-between; margin-bottom:4px">
+                <span style="font-size:13px; font-weight:600">#${i+1} ${p.name}</span>
+                <span class="mono">${p.count}</span>
+              </div>
+              <div style="height:4px; background:var(--bg); border-radius:10px">
+                <div style="height:100%; width:${(p.count/max*100)}%; background:var(--blue); border-radius:10px"></div>
+              </div>
+            </div>`).join('');
+        });
+    }
+
+    loadDashboard('30D');
+
+    // Set sidebar user
+    (function loadUser() {
+      fetch('/api/me').then(r => r.json()).then(me => {
+        const n = document.getElementById('user-name');
+        const ro = document.getElementById('user-role');
+        const av = document.getElementById('user-avatar');
+        if (n) n.textContent = me.name || '—';
+        if (ro) ro.textContent = me.role || '—';
+        if (av) av.textContent = (me.name || '—').split(' ').map(w => w[0]).join('').slice(0,2).toUpperCase();
+      });
+    })();
+
+    // CSRF helper for logout
+    let csrfToken = null;
+    function getCookie(name){ return document.cookie.split('; ').find(r => r.startsWith(name+'='))?.split('=')[1]; }
+    function ensureCsrf(){
+      if (csrfToken) return Promise.resolve(csrfToken);
+      return fetch('/api/csrf')
+        .then(r => r.json())
+        .then(j => { csrfToken = getCookie('XSRF-TOKEN') || j.csrf_token; return csrfToken; });
+    }
+    function csrfFetch(url, opts={}){ return ensureCsrf().then(tok=>{ opts.headers=Object.assign({'X-CSRF-Token':tok}, opts.headers||{}); return fetch(url, opts);}); }
+
+    function logout() {
+      csrfFetch('/api/logout', { method: 'POST' }).then(() => window.location = '/login');
+    }
+  </script>
+</body>
+
+</html>

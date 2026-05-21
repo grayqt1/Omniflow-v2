@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>OmniFlow � Client Profile</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    .profile-header {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 18px;
+      padding-bottom: 18px;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 22px;
+    }
+
+    .profile-avatar {
+      width: 60px;
+      height: 60px;
+      border-radius: 18px;
+      background: rgba(47, 111, 237, 0.12);
+      color: var(--blue);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      font-size: 22px;
+      box-shadow: inset 0 0 0 1px rgba(47, 111, 237, 0.18);
+    }
+
+    .profile-info {
+      min-width: 0;
+      flex: 1;
+    }
+
+    .profile-name {
+      font-size: 22px;
+      font-weight: 800;
+      margin-bottom: 6px;
+    }
+
+    .profile-meta {
+      color: var(--ink-3);
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    .page-header {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 24px;
+    }
+
+    .page-header > div {
+      min-width: 220px;
+      flex: 1;
+    }
+
+    .back-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 14px;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      background: var(--bg);
+      color: var(--ink);
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      text-decoration: none;
+      transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+      white-space: nowrap;
+    }
+
+    .back-btn:hover {
+      background: var(--blue-soft);
+      border-color: transparent;
+      color: var(--blue);
+    }
+
+    .back-btn svg {
+      width: 16px;
+      height: 16px;
+      stroke-width: 2.2;
+    }
+
+    .profile-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 16px;
+      margin-bottom: 16px;
+    }
+
+    .detail-row {
+      display: grid;
+      grid-template-columns: 130px minmax(0, 1fr);
+      align-items: center;
+      gap: 12px;
+      font-size: 13px;
+      padding: 14px 16px;
+      border-radius: 16px;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      line-height: 1.65;
+    }
+
+    .detail-label {
+      color: var(--ink-3);
+      font-weight: 700;
+    }
+
+    .detail-row > div:last-child {
+      color: var(--ink);
+      min-width: 0;
+      word-break: break-word;
+    }
+
+    .pill-small {
+      padding: 6px 10px;
+      border-radius: 999px;
+      background: rgba(47, 111, 237, 0.1);
+      color: var(--blue);
+      font-weight: 700;
+      font-size: 12px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .card {
+      overflow: hidden;
+      box-shadow: 0 20px 50px rgba(15, 23, 42, 0.05);
+    }
+
+    .card-body {
+      padding: 24px;
+    }
+  </style>
+</head>
+
+<body>
+
+  <aside class="sidebar">
+    <div class="sidebar-logo">
+      <div class="logo-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.2" stroke-linecap="round"
+          stroke-linejoin="round">
+          <polygon
+            points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+        </svg>
+      </div>
+      <span class="logo-text">Omni<span>Flow</span></span>
+    </div>
+    <nav>
+      <div class="nav-label">Main</div>
+      <a class="nav-item" href="home.html">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+          stroke-linejoin="round">
+          <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
+          <polyline points="9 22 9 12 15 12 15 22" />
+        </svg>Home</a>
+      <a class="nav-item" href="dashboard.html">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+          stroke-linejoin="round">
+          <rect x="3" y="3" width="7" height="7" />
+          <rect x="14" y="3" width="7" height="7" />
+          <rect x="14" y="14" width="7" height="7" />
+          <rect x="3" y="14" width="7" height="7" />
+        </svg>Dashboard</a>
+      <div class="nav-divider"></div>
+      <div class="nav-label">Operations</div>
+      <a class="nav-item" href="orders.html">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+          stroke-linejoin="round">
+          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+          <polyline points="14 2 14 8 20 8" />
+        </svg>Order Management</a>
+      <a class="nav-item active" href="clients.html">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+          stroke-linejoin="round">
+          <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+          <circle cx="9" cy="7" r="4" />
+        </svg>Client List</a>
+      <a class="nav-item" href="production.html">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+          stroke-linejoin="round">
+          <rect x="3" y="4" width="18" height="18" rx="2" />
+          <line x1="16" y1="2" x2="16" y2="6" />
+          <line x1="8" y1="2" x2="8" y2="6" />
+          <line x1="3" y1="10" x2="21" y2="10" />
+        </svg>Production</a>
+      <a class="nav-item" href="inventory.html">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+          stroke-linejoin="round">
+          <path
+            d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z" />
+        </svg>Inventory</a>
+      <div class="nav-divider"></div>
+      <div class="nav-label">Insights</div>
+      <a class="nav-item" href="reports.html">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+          stroke-linejoin="round">
+          <line x1="18" y1="20" x2="18" y2="10" />
+          <line x1="12" y1="20" x2="12" y2="4" />
+          <line x1="6" y1="20" x2="6" y2="14" />
+        </svg>Reports</a>
+      <a class="nav-item" href="activity.html">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+          stroke-linejoin="round">
+          <path d="M22 12h-4l-3 9L9 3l-3 9H2" />
+        </svg>Activity</a>
+      <div class="nav-divider"></div>
+      <a class="nav-item" href="settings.html">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+          stroke-linejoin="round">
+          <circle cx="12" cy="12" r="3" />
+          <path d="M19.07 4.93a10 10 0 0 1 0 14.14M4.93 4.93a10 10 0 0 0 0 14.14" />
+        </svg>Settings</a>
+    </nav>
+    <div class="sidebar-footer">
+      <div class="avatar" id="user-avatar"></div>
+      <div>
+        <div class="user-name" id="user-name">�</div>
+        <div class="user-role" id="user-role">�</div>
+      </div>
+      <button class="logout-btn" onclick="logout()">Logout</button>
+    </div>
+  </aside>
+
+  <div class="main">
+    <header class="topbar">
+      <span class="topbar-title">Client Profile</span>
+    </header>
+
+    <main class="content">
+      <div class="page-header">
+        <div>
+          <div class="page-title" id="client-name">Loading…</div>
+          <div class="page-sub" id="client-sub">Client details and related orders</div>
+        </div>
+        <button type="button" class="back-btn" onclick="goBack()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="15 18 9 12 15 6" />
+          </svg>
+          Back to clients
+        </button>
+      </div>
+
+      <div class="card">
+        <div class="card-body">
+          <div class="profile-header">
+            <div class="profile-avatar" id="client-avatar">--</div>
+            <div>
+              <div class="page-title" id="client-name-2">�</div>
+              <div class="profile-meta" id="client-meta">�</div>
+            </div>
+          </div>
+          <div class="profile-grid">
+            <div class="detail-row">
+              <div class="detail-label">Contact</div>
+              <div id="client-contact">�</div>
+            </div>
+            <div class="detail-row">
+              <div class="detail-label">Email</div>
+              <div id="client-email">�</div>
+            </div>
+            <div class="detail-row">
+              <div class="detail-label">Phone</div>
+              <div id="client-phone">�</div>
+            </div>
+            <div class="detail-row">
+              <div class="detail-label">Address</div>
+              <div id="client-address">�</div>
+            </div>
+          </div>
+          <div class="detail-row" style="margin-top:6px; gap:12px;">
+            <span class="pill-small" id="client-orders">Orders: �</span>
+            <span class="pill-small" id="client-active">Active: �</span>
+            <span class="pill-small" id="client-since">Since: �</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="card" style="margin-top:16px;">
+        <div class="card-header"><span class="card-title">Orders</span></div>
+        <table>
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Product</th>
+              <th>Qty</th>
+              <th>Status</th>
+              <th>Due</th>
+            </tr>
+          </thead>
+          <tbody id="orders-tbody">
+            <tr>
+              <td colspan="5" class="empty">Loading�</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </main>
+  </div>
+
+  <script>
+    let clientId = new URLSearchParams(window.location.search).get('id');
+    if (!clientId) { window.location = 'clients.html'; }
+
+    const pillClass = { 'done': 'pill-green', 'in-progress': 'pill-blue', 'pending': 'pill-amber', 'queued': 'pill-gray', 'cancelled': 'pill-gray' };
+    const pillLabel = { 'done': 'Completed', 'in-progress': 'In Progress', 'pending': 'Pending', 'queued': 'Queued', 'cancelled': 'Cancelled' };
+
+    function renderClient(c) {
+      document.getElementById('client-name').textContent = c.name;
+      document.getElementById('client-name-2').textContent = c.name;
+      document.getElementById('client-avatar').textContent = (c.name || '--').split(' ').map(w => w[0]).join('').slice(0, 2).toUpperCase();
+      document.getElementById('client-meta').textContent = c.contact || c.email || c.phone || '�';
+      document.getElementById('client-contact').textContent = c.contact || '�';
+      document.getElementById('client-email').textContent = c.email || '�';
+      document.getElementById('client-phone').textContent = c.phone || '�';
+      document.getElementById('client-address').textContent = c.address || '�';
+      document.getElementById('client-orders').textContent = `Orders: ${c.total_orders ?? '—'}`;
+      document.getElementById('client-active').textContent = `Active: ${c.active_orders ?? '—'}`;
+      document.getElementById('client-since').textContent = `Since: ${c.since ?? '—'}`;
+    }
+
+    function goBack() {
+      window.location = 'clients.html';
+    }
+
+    function renderOrders(orders) {
+      const tbody = document.getElementById('orders-tbody');
+      if (!orders.length) { tbody.innerHTML = '<tr><td colspan="5" class="empty">No orders yet.</td></tr>'; return; }
+      tbody.innerHTML = orders.map(o => `
+      <tr>
+        <td class="mono">${o.id}</td>
+        <td>${o.product}</td>
+        <td>${o.qty}</td>
+        <td><span class="pill ${pillClass[o.status] || 'pill-gray'}">${pillLabel[o.status] || o.status}</span></td>
+        <td>${o.due_date}</td>
+      </tr>`).join('');
+    }
+
+    fetch('/api/clients/' + clientId)
+      .then(r => r.ok ? r.json() : Promise.reject())
+      .then(renderClient)
+      .catch(() => window.location = 'clients.html');
+
+    fetch('/api/orders?client_id=' + clientId)
+      .then(r => r.json())
+      .then(renderOrders);
+
+    // CSRF helper + sidebar user
+    let csrfToken = null;
+    function getCookie(name){ return document.cookie.split('; ').find(r => r.startsWith(name+'='))?.split('=')[1]; }
+    function ensureCsrf(){
+      if (csrfToken) return Promise.resolve(csrfToken);
+      return fetch('/api/csrf')
+        .then(r => r.json())
+        .then(j => { csrfToken = getCookie('XSRF-TOKEN') || j.csrf_token; return csrfToken; });
+    }
+    function csrfFetch(url, opts={}){ return ensureCsrf().then(tok=>{ opts.headers=Object.assign({'X-CSRF-Token':tok}, opts.headers||{}); return fetch(url, opts);}); }
+
+    (function loadUser() {
+      fetch('/api/me').then(r => r.json()).then(me => {
+        const n = document.getElementById('user-name');
+        const ro = document.getElementById('user-role');
+        const av = document.getElementById('user-avatar');
+        if (n) n.textContent = me.name || '—';
+        if (ro) ro.textContent = me.role || '—';
+        if (av) av.textContent = (me.name || '—').split(' ').map(w => w[0]).join('').slice(0,2).toUpperCase();
+      });
+    })();
+
+    function logout() {
+      csrfFetch('/api/logout', { method: 'POST' }).then(() => window.location = '/login');
+    }
+  </script>
+</body>
+
+</html>

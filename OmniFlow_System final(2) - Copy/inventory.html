@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>OmniFlow — Inventory</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    .toolbar {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 20px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .search-box {
+      flex: 1;
+      min-width: 160px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 0 12px;
+      height: 36px;
+    }
+
+    .search-box input {
+      border: none;
+      outline: none;
+      font-size: 13px;
+      font-family: inherit;
+      width: 100%;
+      background: transparent;
+    }
+
+    .search-box svg {
+      width: 14px;
+      height: 14px;
+      color: var(--ink-3);
+      flex-shrink: 0;
+    }
+
+    .btn {
+      height: 36px;
+      padding: 0 16px;
+      border-radius: 8px;
+      border: none;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      font-family: inherit;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .btn-primary {
+      background: var(--blue);
+      color: white;
+    }
+
+    .btn-primary:hover {
+      background: #265fd4;
+    }
+
+    .btn-secondary {
+      background: var(--surface);
+      color: var(--ink-2);
+      border: 1px solid var(--border);
+    }
+
+    .filter-select {
+      height: 36px;
+      padding: 0 12px;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      background: var(--surface);
+      color: var(--ink);
+      font-size: 13px;
+      font-family: inherit;
+      cursor: pointer;
+      transition: border-color 0.15s, box-shadow 0.15s;
+    }
+    .filter-select:hover { border-color: var(--blue-mid); }
+    .filter-select:focus { outline: none; border-color: var(--blue); box-shadow: 0 0 0 3px rgba(47,111,237,0.12); }
+
+    .btn svg {
+      width: 14px;
+      height: 14px;
+    }
+
+    .stock-bar-wrap {
+      width: 80px;
+      height: 6px;
+      background: var(--bg);
+      border-radius: 10px;
+      overflow: hidden;
+      display: inline-block;
+      vertical-align: middle;
+      margin-right: 8px;
+    }
+
+    .stock-bar {
+      height: 100%;
+      border-radius: 10px;
+    }
+
+    .bar-ok {
+      background: var(--green);
+    }
+
+    .bar-low {
+      background: var(--amber);
+    }
+
+    .bar-out {
+      background: var(--red);
+    }
+
+    .badge {
+      font-size: 11px;
+      font-weight: 700;
+      padding: 2px 7px;
+      border-radius: 20px;
+    }
+
+    .badge-ok {
+      background: #DCFCE7;
+      color: #16A34A;
+    }
+
+    .badge-low {
+      background: #FEF3C7;
+      color: #D97706;
+    }
+
+    .badge-out {
+      background: #FEE2E2;
+      color: #DC2626;
+    }
+
+    .row-actions {
+      display: flex;
+      gap: 6px;
+    }
+
+    .row-btn {
+      font-size: 11.5px;
+      font-weight: 600;
+      padding: 3px 9px;
+      border-radius: 6px;
+      border: none;
+      cursor: pointer;
+      font-family: inherit;
+    }
+
+    .row-edit {
+      background: var(--blue-soft);
+      color: var(--blue);
+    }
+
+    .row-del {
+      background: #FEE2E2;
+      color: #DC2626;
+    }
+
+    /* Modal */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.3);
+      z-index: 200;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .modal-overlay.open {
+      display: flex;
+    }
+
+    .modal {
+      background: var(--surface);
+      border-radius: 12px;
+      padding: 28px;
+      width: 420px;
+      max-width: 95vw;
+    }
+
+    .modal-title {
+      font-size: 16px;
+      font-weight: 700;
+      margin-bottom: 20px;
+    }
+
+    .form-group {
+      margin-bottom: 14px;
+    }
+
+    label {
+      display: block;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--ink-2);
+      margin-bottom: 5px;
+    }
+
+    input[type=text],
+    input[type=number] {
+      width: 100%;
+      padding: 8px 12px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      font-size: 13px;
+      font-family: inherit;
+      outline: none;
+      background: var(--bg);
+      color: var(--ink);
+    }
+
+    input:focus {
+      border-color: var(--blue);
+      background: var(--surface);
+    }
+
+    .modal-footer {
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+      margin-top: 20px;
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="sidebar-logo">
+      <div class="logo-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.2" stroke-linecap="round"
+          stroke-linejoin="round">
+          <polygon
+            points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+        </svg>
+      </div>
+      <span class="logo-text">Omni<span>Flow</span></span>
+    </div>
+    <nav>
+      <div class="nav-label">Main</div>
+      <a class="nav-item" href="home.html">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+          stroke-linejoin="round">
+          <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
+          <polyline points="9 22 9 12 15 12 15 22" />
+        </svg>Home</a>
+      <a class="nav-item" href="dashboard.html">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+          stroke-linejoin="round">
+          <rect x="3" y="3" width="7" height="7" />
+          <rect x="14" y="3" width="7" height="7" />
+          <rect x="14" y="14" width="7" height="7" />
+          <rect x="3" y="14" width="7" height="7" />
+        </svg>Dashboard</a>
+      <div class="nav-divider"></div>
+      <div class="nav-label">Operations</div>
+      <a class="nav-item" href="orders.html">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+          stroke-linejoin="round">
+          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+          <polyline points="14 2 14 8 20 8" />
+        </svg>Order Management</a>
+      <a class="nav-item" href="clients.html">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+          stroke-linejoin="round">
+          <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+          <circle cx="9" cy="7" r="4" />
+        </svg>Client List</a>
+      <a class="nav-item" href="production.html">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+          stroke-linejoin="round">
+          <rect x="3" y="4" width="18" height="18" rx="2" />
+          <line x1="16" y1="2" x2="16" y2="6" />
+          <line x1="8" y1="2" x2="8" y2="6" />
+          <line x1="3" y1="10" x2="21" y2="10" />
+        </svg>Production</a>
+      <a class="nav-item active" href="inventory.html">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+          stroke-linejoin="round">
+          <path
+            d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z" />
+        </svg>Inventory</a>
+      <div class="nav-divider"></div>
+      <div class="nav-label">Insights</div>
+      <a class="nav-item" href="reports.html">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+          stroke-linejoin="round">
+          <line x1="18" y1="20" x2="18" y2="10" />
+          <line x1="12" y1="20" x2="12" y2="4" />
+          <line x1="6" y1="20" x2="6" y2="14" />
+        </svg>Reports</a>
+      <a class="nav-item" href="activity.html">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+          stroke-linejoin="round">
+          <path d="M22 12h-4l-3 9L9 3l-3 9H2" />
+        </svg>Activity</a>
+      <div class="nav-divider"></div>
+      <a class="nav-item" href="settings.html">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+          stroke-linejoin="round">
+          <circle cx="12" cy="12" r="3" />
+          <path d="M19.07 4.93a10 10 0 0 1 0 14.14M4.93 4.93a10 10 0 0 0 0 14.14" />
+        </svg>Settings</a>
+    </nav>
+    <div class="sidebar-footer">
+      <div class="avatar" id="user-avatar"></div>
+      <div>
+        <div class="user-name" id="user-name">—</div>
+        <div class="user-role" id="user-role">—</div>
+      </div>
+      <button class="logout-btn" onclick="logout()">Logout</button>
+    </div>
+  </aside>
+
+  <!-- MAIN -->
+  <div class="main">
+    <header class="topbar">
+      <span class="topbar-title">Inventory</span>
+    </header>
+
+    <main class="content">
+      <div class="page-header">
+        <div class="page-title">Inventory</div>
+        <div class="page-sub">Stock levels from database. Low stock items are flagged automatically.</div>
+      </div>
+
+      <div class="toolbar">
+        <div class="search-box">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+            stroke-linejoin="round">
+            <circle cx="11" cy="11" r="8" />
+            <line x1="21" y1="21" x2="16.65" y2="16.65" />
+          </svg>
+          <input type="text" placeholder="Search items…" oninput="filterInventory(this.value)" />
+      </div>
+      <!-- Filter: All / Low Stock / Out of Stock -->
+      <select class="filter-select" onchange="filterByStatus(this.value)">
+        <option value="">All Items</option>
+        <option value="low">Low Stock</option>
+        <option value="out">Out of Stock</option>
+        <option value="ok">OK</option>
+      </select>
+        <button id="add-item-btn" class="btn btn-primary" onclick="openModal()" style="display:none;">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          Add
+        </button>
+      </div>
+
+      <!-- Inventory Table — from /api/inventory -->
+      <div class="card">
+        <table>
+          <thead>
+            <tr>
+              <th>Item</th>
+              <th>Category</th>
+              <th>Stock</th>
+              <th>Min Stock</th>
+              <th>Unit</th>
+              <th>Status</th>
+              <th id="inventory-actions-header" style="display:none">Actions</th>
+            </tr>
+          </thead>
+          <tbody id="inventory-tbody">
+            <tr>
+              <td colspan="7" class="empty">Loading inventory…</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </main>
+  </div>
+
+  <!-- Add Item Modal -->
+  <div class="modal-overlay" id="item-modal">
+    <div class="modal">
+      <div class="modal-title" id="modal-title">Add Inventory Item</div>
+      <div class="form-group">
+        <label>Item Name</label>
+        <input type="text" id="f-item" placeholder="e.g. Steel Rod" />
+      </div>
+      <div class="form-group">
+        <label>Category</label>
+        <input type="text" id="f-category" placeholder="e.g. Raw Material" />
+      </div>
+      <div class="form-group">
+        <label>Current Stock</label>
+        <input type="number" id="f-stock" placeholder="0" />
+      </div>
+      <div class="form-group">
+        <label>Minimum Stock Level</label>
+        <input type="number" id="f-min" placeholder="0" />
+      </div>
+      <div class="form-group">
+        <label>Unit</label>
+        <input type="text" id="f-unit" placeholder="e.g. pcs, kg, meters" />
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" onclick="closeModal()">Cancel</button>
+        <button class="btn btn-primary" onclick="saveItem()">Save Item</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    let editId = null;
+    // CSRF + API helpers
+    let csrfToken = null;
+    let inventoryPerms = { create: false, update: false, delete: false };
+    function getCookie(name){ return document.cookie.split('; ').find(r => r.startsWith(name+'='))?.split('=')[1]; }
+    function ensureCsrf(){
+      if (csrfToken) return Promise.resolve(csrfToken);
+      return fetch('/api/csrf')
+        .then(r => r.json())
+        .then(j => { csrfToken = getCookie('XSRF-TOKEN') || j.csrf_token; return csrfToken; });
+    }
+    function csrfFetch(url, opts={}){ return ensureCsrf().then(tok=>{ opts.headers = Object.assign({'X-CSRF-Token':tok}, opts.headers||{}); opts.credentials = opts.credentials || 'same-origin'; return fetch(url, opts);}); }
+
+    function applyInventoryPermissions() {
+      const addBtn = document.getElementById('add-item-btn');
+      if (addBtn) addBtn.style.display = inventoryPerms.create ? 'inline-flex' : 'none';
+      const actionsHeader = document.getElementById('inventory-actions-header');
+      if (actionsHeader) {
+        actionsHeader.style.display = (inventoryPerms.update || inventoryPerms.delete) ? '' : 'none';
+      }
+    }
+
+    function loadInventoryPermissions() {
+      return fetch('/api/me').then(r => r.json()).then(me => {
+        return fetch('/api/settings/permissions').then(r => r.json()).then(perms => {
+          const role = (me.role || '').trim();
+          const rolePerms = perms[role] || {};
+          const invRole = rolePerms.inventory || {};
+          inventoryPerms = {
+            create: !!invRole.create,
+            update: !!invRole.update,
+            delete: !!invRole.delete,
+          };
+          if (!Object.keys(rolePerms).length && (role.toLowerCase() === 'admin' || role.toLowerCase().includes('manager'))) {
+            inventoryPerms = { create: true, update: true, delete: true };
+          }
+          applyInventoryPermissions();
+        });
+      }).catch(() => {});
+    }
+
+    function openModal(id) {
+      editId = id || null;
+      document.getElementById('modal-title').textContent = id ? 'Edit Item' : 'Add Inventory Item';
+      ['f-item','f-category','f-stock','f-min','f-unit'].forEach(fid => document.getElementById(fid).value = '');
+      if (id) {
+        fetch('/api/inventory/' + id)
+          .then(r => r.json())
+          .then(i => {
+            document.getElementById('f-item').value = i.name;
+            document.getElementById('f-category').value = i.category;
+            document.getElementById('f-stock').value = i.stock;
+            document.getElementById('f-min').value = i.min_stock;
+            document.getElementById('f-unit').value = i.unit;
+          });
+      }
+      document.getElementById('item-modal').classList.add('open');
+    }
+    function closeModal() { document.getElementById('item-modal').classList.remove('open'); editId = null; }
+
+    function saveItem() {
+      const payload = {
+        name: document.getElementById('f-item').value,
+        category: document.getElementById('f-category').value,
+        stock: document.getElementById('f-stock').value,
+        min_stock: document.getElementById('f-min').value,
+        unit: document.getElementById('f-unit').value,
+      };
+      const url = editId ? '/api/inventory/' + editId : '/api/inventory';
+      const method = editId ? 'PUT' : 'POST';
+      csrfFetch(url, { method, headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) })
+        .then(r => { if (!r.ok) throw new Error(); closeModal(); loadInventory(); })
+        .catch(() => alert('Could not save item.'));
+    }
+
+    function getStatus(stock, min) {
+      if (stock === 0) return 'out';
+      if (stock <= min) return 'low';
+      return 'ok';
+    }
+
+    function renderInventory(items) {
+      const tbody = document.getElementById('inventory-tbody');
+      if (!items.length) { tbody.innerHTML = '<tr><td colspan="7" class="empty">No items found.</td></tr>'; return; }
+
+      const pct = (s, m) => Math.min(100, m > 0 ? (s / (m * 2)) * 100 : 100);
+      const statusMap = {
+        ok: { cls: 'badge-ok', bar: 'bar-ok', label: 'OK' },
+        low: { cls: 'badge-low', bar: 'bar-low', label: 'Low Stock' },
+        out: { cls: 'badge-out', bar: 'bar-out', label: 'Out of Stock' },
+      };
+
+      tbody.innerHTML = items.map(i => {
+        const s = getStatus(i.stock, i.min_stock);
+        const m = statusMap[s];
+        const actions = [];
+        if (inventoryPerms.update) actions.push(`<button class="row-btn row-edit" onclick="openModal('${i.id}')">Edit</button>`);
+        if (inventoryPerms.delete) actions.push(`<button class="row-btn row-del" onclick="deleteItem('${i.id}')">Delete</button>`);
+        return `<tr>
+        <td style="font-weight:600">${i.name}</td>
+        <td>${i.category}</td>
+        <td>
+          <div class="stock-bar-wrap"><div class="stock-bar ${m.bar}" style="width:${pct(i.stock, i.min_stock)}%"></div></div>
+          <span class="mono">${i.stock}</span>
+        </td>
+        <td class="mono">${i.min_stock}</td>
+        <td>${i.unit}</td>
+        <td><span class="badge ${m.cls}">${m.label}</span></td>
+        <td>
+          <div class="row-actions">
+            ${actions.join('') || '<span class="mono">—</span>'}
+          </div>
+        </td>
+      </tr>`;
+      }).join('');
+    }
+
+    function adjustStock(id, delta) {
+      fetch('/api/inventory/' + id)
+        .then(r => r.json())
+        .then(item => {
+          const newStock = Math.max(0, Number(item.stock || 0) + delta);
+          return csrfFetch('/api/inventory/' + id, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ stock: newStock })
+          });
+        })
+        .then(() => loadInventory())
+        .catch(() => alert('Could not update stock.'));
+    }
+
+    function deleteItem(id) {
+      if (!confirm('Delete this item?')) return;
+      csrfFetch('/api/inventory/' + id, { method: 'DELETE' }).then(loadInventory);
+    }
+
+    function filterInventory(q) {
+      fetch(`/api/inventory?search=${q}`).then(r => r.json()).then(renderInventory);
+    }
+
+    function filterByStatus(s) {
+      fetch(`/api/inventory?status=${s}`).then(r => r.json()).then(renderInventory);
+    }
+
+    function loadInventory() {
+      loadInventoryPermissions().then(() => fetch('/api/inventory').then(r => r.json()).then(renderInventory));
+    }
+
+    loadInventory();
+
+    (function loadUser() {
+      fetch('/api/me').then(r => r.json()).then(me => {
+        const n = document.getElementById('user-name');
+        const ro = document.getElementById('user-role');
+        const av = document.getElementById('user-avatar');
+        if (n) n.textContent = me.name || '—';
+        if (ro) ro.textContent = me.role || '—';
+        if (av) av.textContent = (me.name || '—').split(' ').map(w => w[0]).join('').slice(0, 2).toUpperCase();
+      }).catch(() => {});
+    })();
+
+    function logout() {
+      csrfFetch('/api/logout', { method: 'POST' }).then(() => window.location = '/login');
+    }
+  </script>
+</body>
+
+</html>

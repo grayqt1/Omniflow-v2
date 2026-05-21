@@ -1,0 +1,273 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>OmniFlow — Clients</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    .toolbar { display: flex; gap: 10px; margin-bottom: 20px; align-items: center; }
+    .search-box { flex: 1; display: flex; align-items: center; gap: 8px; background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 0 12px; height: 36px; }
+    .search-box input { border: none; outline: none; font-size: 13px; font-family: inherit; width: 100%; background: transparent; }
+    .search-box svg { width: 14px; height: 14px; color: var(--ink-3); flex-shrink: 0; }
+    .btn { height: 36px; padding: 0 16px; border-radius: 8px; border: none; font-size: 13px; font-weight: 600; cursor: pointer; font-family: inherit; display: flex; align-items: center; gap: 6px; }
+    .btn-primary { background: var(--blue); color: white; }
+    .btn-primary:hover { background: #265fd4; }
+    .btn svg { width: 14px; height: 14px; }
+
+    /* Client cards grid */
+    .client-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 14px; }
+
+    .client-card {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 20px;
+      cursor: pointer; transition: box-shadow 0.2s, border-color 0.2s;
+      text-decoration: none; display: block; color: inherit;
+    }
+    .client-card:hover { box-shadow: 0 4px 16px rgba(0,0,0,0.07); border-color: var(--blue-mid); }
+
+    .client-card-top { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; }
+    .client-avatar { width: 40px; height: 40px; border-radius: 50%; background: var(--blue-soft); color: var(--blue); display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 700; flex-shrink: 0; }
+    .client-card-name { font-size: 14px; font-weight: 700; margin-bottom: 2px; }
+    .client-card-contact { font-size: 12px; color: var(--ink-3); }
+
+    .client-card-stats { display: flex; gap: 16px; }
+    .client-stat { font-size: 12px; color: var(--ink-3); }
+    .client-stat strong { display: block; font-size: 15px; font-weight: 700; color: var(--ink); }
+
+    .row-actions { display: flex; gap: 8px; margin-top: 12px; }
+    .row-btn { font-size: 11.5px; font-weight: 700; padding: 6px 12px; border-radius: 8px; border: none; cursor: pointer; font-family: inherit; transition: transform 0.1s ease, box-shadow 0.15s; }
+    .row-btn:active { transform: translateY(1px); }
+    .row-open { background: var(--blue-soft); color: var(--blue); box-shadow: 0 1px 4px rgba(47,111,237,0.25); }
+    .row-open:hover { box-shadow: 0 4px 12px rgba(47,111,237,0.25); }
+    .row-del  { background: #FEE2E2; color: #DC2626; }
+    .row-del:hover { box-shadow: 0 4px 10px rgba(220,38,38,0.15); }
+
+    /* Modal */
+    .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.3); z-index: 200; align-items: center; justify-content: center; }
+    .modal-overlay.open { display: flex; }
+    .modal { background: var(--surface); border-radius: 12px; padding: 28px; width: 440px; max-width: 95vw; }
+    .modal-title { font-size: 16px; font-weight: 700; margin-bottom: 20px; }
+    .form-group { margin-bottom: 14px; }
+    label { display: block; font-size: 12px; font-weight: 600; color: var(--ink-2); margin-bottom: 5px; }
+    input[type=text], input[type=email], input[type=tel] { width: 100%; padding: 8px 12px; border: 1px solid var(--border); border-radius: 8px; font-size: 13px; font-family: inherit; outline: none; background: var(--bg); color: var(--ink); }
+    input:focus { border-color: var(--blue); background: var(--surface); }
+    .modal-footer { display: flex; justify-content: flex-end; gap: 10px; margin-top: 20px; }
+    .btn-secondary { background: var(--surface); color: var(--ink-2); border: 1px solid var(--border); }
+  </style>
+</head>
+<body>
+
+<!-- SIDEBAR -->
+<aside class="sidebar">
+  <div class="sidebar-logo">
+    <div class="logo-icon">
+      <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+    </div>
+    <span class="logo-text">Omni<span>Flow</span></span>
+  </div>
+  <nav>
+    <div class="nav-label">Main</div>
+    <a class="nav-item" href="home.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>Home</a>
+    <a class="nav-item" href="dashboard.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>Dashboard</a>
+    <div class="nav-divider"></div>
+    <div class="nav-label">Operations</div>
+    <a class="nav-item" href="orders.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>Order Management</a>
+    <a class="nav-item active" href="clients.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>Client List</a>
+    <a class="nav-item" href="production.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>Production</a>
+    <a class="nav-item" href="inventory.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>Inventory</a>
+    <div class="nav-divider"></div>
+    <div class="nav-label">Insights</div>
+    <a class="nav-item" href="reports.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>Reports</a>
+    <a class="nav-item" href="activity.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>Activity</a>
+    <div class="nav-divider"></div>
+    <a class="nav-item" href="settings.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M4.93 4.93a10 10 0 0 0 0 14.14"/></svg>Settings</a>
+  </nav>
+  <div class="sidebar-footer">
+    <div class="avatar" id="user-avatar"></div>
+    <div><div class="user-name" id="user-name">—</div><div class="user-role" id="user-role">—</div></div>
+    <button class="logout-btn" onclick="logout()">Logout</button>
+  </div>
+</aside>
+
+<!-- MAIN -->
+<div class="main">
+  <header class="topbar">
+    <span class="topbar-title">Client List</span>
+    <div class="topbar-right">
+      <button id="add-client-btn" class="btn btn-primary" onclick="openModal()" style="display:none;">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        Add Client
+      </button>
+    </div>
+  </header>
+
+  <main class="content">
+    <div class="page-header">
+      <div class="page-title">Clients</div>
+      <div class="page-sub">All clients from database. Click a card to view full profile.</div>
+    </div>
+
+    <div class="toolbar">
+      <div class="search-box">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <input type="text" placeholder="Search clients…" oninput="filterClients(this.value)" />
+      </div>
+    </div>
+
+    <!-- Client cards — from /api/clients -->
+    <div class="client-grid" id="client-grid">
+      <div class="empty" style="grid-column:1/-1">Loading clients…</div>
+    </div>
+  </main>
+</div>
+
+<!-- Add Client Modal -->
+<div class="modal-overlay" id="client-modal">
+  <div class="modal">
+    <div class="modal-title">Add Client</div>
+    <div class="form-group">
+      <label>Full Name / Business Name</label>
+      <input type="text" id="f-name" placeholder="e.g. Santos & Co." />
+    </div>
+    <div class="form-group">
+      <label>Contact Person</label>
+      <input type="text" id="f-contact" placeholder="e.g. Mark Santos" />
+    </div>
+    <div class="form-group">
+      <label>Email</label>
+      <input type="email" id="f-email" placeholder="email@example.com" />
+    </div>
+    <div class="form-group">
+      <label>Phone</label>
+      <input type="tel" id="f-phone" placeholder="+63 9xx xxx xxxx" />
+    </div>
+    <div class="form-group">
+      <label>Address</label>
+      <input type="text" id="f-address" placeholder="Optional" />
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary" onclick="closeModal()">Cancel</button>
+      <button class="btn btn-primary" onclick="saveClient()">Save Client</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  let clientPerms = { create: false, delete: false };
+  function applyClientPermissions() {
+    const addBtn = document.getElementById('add-client-btn');
+    if (addBtn) addBtn.style.display = clientPerms.create ? 'inline-flex' : 'none';
+  }
+  function loadClientPermissions() {
+    return fetch('/api/me').then(r => r.json()).then(me => {
+      return fetch('/api/settings/permissions').then(r => r.json()).then(perms => {
+        const role = (me.role || '').trim();
+        const rolePerms = perms[role] || {};
+        const clientRole = rolePerms.clients || {};
+        clientPerms = {
+          create: !!clientRole.create,
+          delete: !!clientRole.delete,
+        };
+        if (!Object.keys(rolePerms).length && (role.toLowerCase() === 'admin' || role.toLowerCase().includes('manager'))) {
+          clientPerms = { create: true, delete: true };
+        }
+        applyClientPermissions();
+      });
+    }).catch(() => {});
+  }
+
+  function openModal()  { document.getElementById('client-modal').classList.add('open'); }
+  function closeModal() { document.getElementById('client-modal').classList.remove('open'); }
+
+  // CSRF helper for create/update/delete/logout
+  let csrfToken = null;
+  function getCookie(name){ return document.cookie.split('; ').find(r => r.startsWith(name+'='))?.split('=')[1]; }
+  function ensureCsrf(){
+    if (csrfToken) return Promise.resolve(csrfToken);
+    return fetch('/api/csrf')
+      .then(r => r.json())
+      .then(j => { csrfToken = getCookie('XSRF-TOKEN') || j.csrf_token; return csrfToken; });
+  }
+  function csrfFetch(url, opts={}){ return ensureCsrf().then(tok=>{ opts.headers = Object.assign({'X-CSRF-Token':tok}, opts.headers||{}); opts.credentials = opts.credentials || 'same-origin'; return fetch(url, opts);}); }
+
+  function saveClient() {
+    const payload = {
+      name: document.getElementById('f-name').value,
+      contact: document.getElementById('f-contact').value,
+      email: document.getElementById('f-email').value,
+      phone: document.getElementById('f-phone').value,
+      address: document.getElementById('f-address').value,
+    };
+    csrfFetch('/api/clients', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(payload) })
+      .then(r => r.ok ? r.json() : r.json().then(body => Promise.reject({ status:r.status, body })))
+      .then(() => { closeModal(); loadClients(); })
+      .catch(err => {
+        if (err.status === 409) { alert('Client already exists with the same details.'); }
+        else { alert('Could not add client.'); }
+      });
+  }
+
+  function initials(name) { return name.split(' ').map(w => w[0]).join('').slice(0,2).toUpperCase(); }
+
+  function renderClients(clients) {
+    const grid = document.getElementById('client-grid');
+    if (!clients.length) {
+      grid.innerHTML = '<div class="empty" style="grid-column:1/-1">No clients yet.</div>';
+      return;
+    }
+    grid.innerHTML = clients.map(c => {
+      const actions = [
+        `<button class="row-btn row-open" onclick="window.location='client-profile.html?id=${c.id}'">Open</button>`,
+        clientPerms.delete ? `<button class="row-btn row-del" onclick="deleteClient('${c.id}')">Delete</button>` : ''
+      ].filter(Boolean).join('') || '<span class="mono">—</span>';
+      return `
+      <div class="client-card">
+        <div class="client-card-top">
+          <div class="client-avatar">${initials(c.name)}</div>
+          <div>
+            <div class="client-card-name">${c.name}</div>
+            <div class="client-card-contact">${c.phone || c.email || '—'}</div>
+          </div>
+        </div>
+        <div class="client-card-stats">
+          <div class="client-stat"><strong>${c.total_orders}</strong>Orders</div>
+          <div class="client-stat"><strong>${c.active_orders}</strong>Active</div>
+          <div class="client-stat"><strong>${c.since}</strong>Since</div>
+        </div>
+        <div class="row-actions">
+          ${actions}
+        </div>
+      </div>`;
+    }).join('');
+  }
+
+  function filterClients(q) { fetch(`/api/clients?search=${q}`).then(r => r.json()).then(renderClients); }
+
+  function loadClients() { loadClientPermissions().then(() => fetch('/api/clients').then(r => r.json()).then(renderClients)); }
+
+  function deleteClient(id) {
+    if (!confirm('Delete this client?')) return;
+    csrfFetch('/api/clients/' + id, { method:'DELETE' })
+      .then(r => { if (!r.ok) throw new Error(); loadClients(); })
+      .catch(() => alert('Could not delete client.'));
+  }
+
+  loadClients();
+
+  // Set sidebar user
+  (function loadUser() {
+    fetch('/api/me').then(r => r.json()).then(me => {
+      const n = document.getElementById('user-name');
+      const ro = document.getElementById('user-role');
+      const av = document.getElementById('user-avatar');
+      if (n) n.textContent = me.name || '—';
+      if (ro) ro.textContent = me.role || '—';
+      if (av) av.textContent = (me.name || '—').split(' ').map(w => w[0]).join('').slice(0,2).toUpperCase();
+    });
+  })();
+
+  function logout() { csrfFetch('/api/logout', { method: 'POST' }).then(() => window.location = '/login'); }
+</script>
+</body>
+</html>
